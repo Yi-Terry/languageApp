@@ -6,7 +6,7 @@ const endAlignment = Alignment.bottomRight;
 class StartScreen extends StatelessWidget {
   const StartScreen(this.startLearning,{super.key});
 
-  final void Function() startLearning ;
+  final void Function() startLearning;
   
   @override
   Widget build(context) {
