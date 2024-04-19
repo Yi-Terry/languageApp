@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:language_app/home_screen/color_button.dart';
-import 'package:language_app/home_screen/app_colors.dart' as AppColors;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -34,18 +33,18 @@ class _MyHomePageState extends State<MyHomePage>{
   @override
   Widget build(BuildContext context) {
     return Center(
-      //color: AppColors.background,
       child: SafeArea(
         child: Scaffold(
           body: Column(
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 10,right: 10), //put into container so margin can be applied to container
-                child: const Row( //row for points, language name, profile
+                color: Colors.grey,
+                child: const Row( //row for points, language name, profile @Chris Z
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
+                      SizedBox(width: 5,),
                       ImageIcon(
                         AssetImage('assets/images/points.png'),
                         size: 50,
@@ -55,9 +54,8 @@ class _MyHomePageState extends State<MyHomePage>{
                     ],
                   ),
 
-                  //Language you are working title
                   Padding(
-                    padding: EdgeInsets.only(right: 55.0), //shift spanish to left by padding to the right
+                    padding: EdgeInsets.only(right: 55.0), //shift spanish to left by padding to the right @Chris Z
                       child: Text(
                         'Spanish',
                           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -69,12 +67,13 @@ class _MyHomePageState extends State<MyHomePage>{
                         Icons.account_circle,
                         size: 40,
                       ),
+                      SizedBox(width: 5,)
                     ],
                   )
                 ],
               ),
               ),
-              const SizedBox(height: 10), //puts space between top and the first row
+              const SizedBox(height: 10), //puts space between top and the first row @Chris Z
               
 
               const Spacer(),
@@ -82,57 +81,92 @@ class _MyHomePageState extends State<MyHomePage>{
               Row( //Level 1
                   children: [
 
-                    const Spacer(),
+                    const Spacer(), //TO THE LEFT OF GREEN @Chris Z
 
-                    ColoredButton(
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black, width: 5)
+                      ),
+
+                      child: ColoredButton(
                       color: Colors.green, 
                       text: "Easy",
                       onTap: (){ goToEasy();
                       }),
 
-                    const Spacer()
+                    ),
+
+                    const Spacer() //TO THE RIGHT OF GREEN @Chris Z
 
                   ]),
 
-                  const Spacer(),
+                  const Spacer(), //BETWEEN 1ST AND 2ND ROW @Chris Z
 
                   Row( //Level 2 & 3
               children: [
                 
-                    const Spacer(),
+                    const Spacer(), //TO THE LEFT OF YELLOW @Chris Z
                     
-                    ColoredButton(
+                      Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black, width: 5)
+                      ),
+
+                      child: ColoredButton(
                       color: Colors.yellow, 
                       text: "Medium",
                       onTap: (){ goToMedium();
                       }),
 
-                    const Spacer(), const Spacer(),
+                    ),
 
-                    ColoredButton(
+                    const Spacer(), const Spacer(), //BETWEEN YELLOW AND RED @Chris Z
+
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black, width: 5)
+                      ),
+
+                      child: ColoredButton(
                       color: Colors.red, 
                       text: "Hard",
                       onTap: (){ goToHard();
                       }),
-                      const Spacer(),
+                    ),
+
+                    const Spacer(), //TO THE RIGHT OF RED @Chris Z
+
                   ]),
 
-                  const Spacer(),
+                  const Spacer(), //BETWEEN 2ND AND 3RD ROW @Chris Z
 
               Row( //Level 4
                 children: [
 
-                    const Spacer(),
+                  
+
+                    const Spacer(),//TO THE LEFT OF GOLD @Chris Z
                     
-                    ColoredButton(
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black, width: 5)
+                      ),
+                      child: ColoredButton(
                       color: const Color.fromARGB(255, 255, 215, 0), 
                       text: "Premium",
                       onTap: (){ goToPremium();
                       }),
-                    const Spacer()
+                    ),
+                    
+                    const Spacer() //TO THE RIGHT OF GOLD @Chris Z
+
                   ]),
                   
-                  const Spacer(),
+                  const Spacer(),  //UNDER GOLD @Chris Z
             ],
           ),
         ),
