@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:language_app/home_screen/color_button.dart';
+import 'package:language_app/levels/easy_level.dart';
+import 'package:language_app/levels/medium_level.dart';
+import 'package:language_app/levels/hard_level.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -17,19 +20,36 @@ class _MyHomePageState extends State<MyHomePage>{
   void chooseAnswer(String answer){
     selectedAnswer.add(answer);
   }
-  void goToEasy(){
-    //activeScreen = EasyLevel(onSelectAnswer: chooseAnswer);
+  void switchScreen(){
+    setState(() {
+      // activeScreen = LoginScreen();
+      activeScreen = const MyHomePage();
+    });
   }
-  void goToMedium(){
-    //activeScreen = MediumLevel(onSelectAnswer: chooseAnswer);
+
+  void goToEasy(){ //goes to the easy questions when called
+    // print("easy function called");  - debug statement 
+    setState(() {
+      // print("set state"); - debug statement
+      activeScreen = EasyLevel(onSelectAnswer: chooseAnswer);
+    });
+    //switchScreen();
   }
-  void goToHard(){
-    //activeScreen = HardLevel(onSelectAnswer: chooseAnswer);
+  
+  void goToMedium(){ //goes to medium questions
+    setState((){
+      activeScreen = MediumLevel(onSelectAnswer: chooseAnswer);
+    });
+  }
+  void goToHard(){ //goes to hard questions
+    setState((){
+      activeScreen = HardLevel(onSelectAnswer: chooseAnswer);
+    });
   }
   void goToPremium(){
     //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswer);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -92,7 +112,8 @@ class _MyHomePageState extends State<MyHomePage>{
                       child: ColoredButton(
                       color: Colors.green, 
                       text: "Easy",
-                      onTap: (){ goToEasy();
+                      onTap: (){ 
+                        goToEasy();
                       }),
 
                     ),
@@ -117,7 +138,8 @@ class _MyHomePageState extends State<MyHomePage>{
                       child: ColoredButton(
                       color: Colors.yellow, 
                       text: "Medium",
-                      onTap: (){ goToMedium();
+                      onTap: (){ 
+                        goToMedium();
                       }),
 
                     ),
@@ -133,7 +155,8 @@ class _MyHomePageState extends State<MyHomePage>{
                       child: ColoredButton(
                       color: Colors.red, 
                       text: "Hard",
-                      onTap: (){ goToHard();
+                      onTap: (){ 
+                        goToHard();
                       }),
                     ),
 

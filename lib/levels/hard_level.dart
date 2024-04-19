@@ -27,7 +27,7 @@ class _HardLevelState extends State<HardLevel>{
 
   @override
   Widget build(context){
-    final currentQuestion = easyQuestions[currentQuestionIndex];
+    final currentQuestion = hardQuestions[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,
