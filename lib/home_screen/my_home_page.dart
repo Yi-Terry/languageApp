@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage>{
     return Center(
       child: SafeArea(
         child: Scaffold(
-          body: Column(
+          body: activeScreen ?? Column(
             children: [
               Container(
                 color: Colors.grey,

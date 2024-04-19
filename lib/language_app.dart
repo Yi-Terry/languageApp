@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:language_app/login_screen.dart';
 import 'package:language_app/start_screen.dart';
 
@@ -14,7 +15,7 @@ class LanguageApp extends StatefulWidget{
 
 class _LanguageAppState extends State<LanguageApp>
 {
-
+  List<String> selectedAnswer = [];
   Widget? activeScreen;
 
   @override
@@ -26,6 +27,7 @@ class _LanguageAppState extends State<LanguageApp>
   void switchScreen(){
     setState(() {
       // activeScreen = LoginScreen();
+      activeScreen = MyHomePage();
     });
   }
 
@@ -37,15 +39,17 @@ Widget build(context){
     home: Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors:
-            [
-              Color.fromARGB(255, 4, 73, 249),
-              Color.fromARGB(255, 3, 52, 143),
-            ],
-            begin: startAlignment,
-            end: endAlignment, 
-            )
+          // gradient: LinearGradient(
+          //   colors:
+          //   [
+          //     Color.fromARGB(255, 248, 22, 22),
+          //     Color.fromARGB(255, 255, 216, 100),
+          //     Color.fromARGB(255, 248, 22, 22),
+          //   ],
+          //   begin: startAlignment,
+          //   end: endAlignment, 
+          //   )
+          color: Color.fromARGB(255, 169, 241, 255)
         ),
         child: activeScreen,
       ),
