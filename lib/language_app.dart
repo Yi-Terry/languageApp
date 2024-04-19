@@ -36,6 +36,7 @@ class _LanguageAppState extends State<LanguageApp>
 @override
 Widget build(context){
   return MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Scaffold(
       body: Container(
         decoration: const BoxDecoration(
