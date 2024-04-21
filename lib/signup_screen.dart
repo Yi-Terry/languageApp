@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            OutlinedButton.icon(
+            OutlinedButton.icon( //button to bring to HomePage @Kelly O
               onPressed: (){},
               icon: const Icon(Icons.arrow_circle_right_outlined),
               label: const Text(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:language_app/home_screen/color_button.dart';
+import 'package:language_app/widgets/questions.dart';
+import 'package:language_app/collect_rewards.dart';
 import 'package:language_app/levels/easy_level.dart';
 import 'package:language_app/levels/medium_level.dart';
 import 'package:language_app/levels/hard_level.dart';
@@ -18,9 +20,40 @@ class _MyHomePageState extends State<MyHomePage>{
   List<String> selectedAnswer = [];
   Widget? activeScreen;
 
-  void chooseAnswer(String answer){
+  // choose answer methods for each type of questions --> will bring them to results page @Kelly O
+  void chooseAnswerEasy(String answer){
     selectedAnswer.add(answer);
+    if(selectedAnswer.length == easyQuestions.length){
+      setState((){
+        activeScreen = CollectRewardsPage(questions: easyQuestions, chosenAnswers: selectedAnswer);
+      });
+    }
   }
+  void chooseAnswerMedium(String answer){
+    selectedAnswer.add(answer);
+    if(selectedAnswer.length == mediumQuestions.length){
+      setState((){
+        activeScreen = CollectRewardsPage(questions: mediumQuestions, chosenAnswers: selectedAnswer);
+      });
+    }
+  }
+  void chooseAnswerHard(String answer){
+    selectedAnswer.add(answer);
+    if(selectedAnswer.length == hardQuestions.length){
+      setState((){
+        activeScreen = CollectRewardsPage(questions: hardQuestions, chosenAnswers: selectedAnswer);
+      });
+    }
+  }
+  void chooseAnswerPrem(String answer){
+    selectedAnswer.add(answer);
+    if(selectedAnswer.length == premiumQuestions.length){
+      setState((){
+        //activeScreen = CollectRewardsPage(questions: premiumQuestions, chosenAnswers: selectedAnswer);
+      });
+    }
+  }
+
   void switchScreen(){
     setState(() {
       // activeScreen = LoginScreen();
@@ -28,27 +61,27 @@ class _MyHomePageState extends State<MyHomePage>{
     });
   }
 
-  void goToEasy(){ //goes to the easy questions when called
+  void goToEasy(){ //goes to the easy questions when called @Kelly O
     // print("easy function called");  - debug statement 
     setState(() {
       // print("set state"); - debug statement
-      activeScreen = EasyLevel(onSelectAnswer: chooseAnswer);
+      activeScreen = EasyLevel(onSelectAnswer: chooseAnswerEasy);
     });
     //switchScreen();
   }
   
-  void goToMedium(){ //goes to medium questions
+  void goToMedium(){ //goes to medium questions @Kelly O
     setState((){
-      activeScreen = MediumLevel(onSelectAnswer: chooseAnswer);
+      activeScreen = MediumLevel(onSelectAnswer: chooseAnswerMedium);
     });
   }
-  void goToHard(){ //goes to hard questions
+  void goToHard(){ //goes to hard questions @Kelly O
     setState((){
-      activeScreen = HardLevel(onSelectAnswer: chooseAnswer);
+      activeScreen = HardLevel(onSelectAnswer: chooseAnswerHard);
     });
   }
-  void goToPremium(){
-    //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswer);
+  void goToPremium(){ //goes to premium question when unlocked @Kelly O
+    //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswerPremium);
   }
   
   @override

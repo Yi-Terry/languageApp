@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:language_app/widgets/questions.dart';
 
 class CollectRewardsPage extends StatelessWidget {
-
-  final List<String> questions;  // could be easy, medium, hard, premium questions
-  const CollectRewardsPage({super.key, required this.questions});
+  const CollectRewardsPage({super.key, required this.questions, required this.chosenAnswers});
+  
+  final List<QuizQuestion> questions;  // could be easy, medium, hard, premium questions
+  final List<String> chosenAnswers;
 
   @override
   Widget build (BuildContext context) {

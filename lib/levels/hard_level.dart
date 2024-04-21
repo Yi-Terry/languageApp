@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:language_app/widgets/questions.dart';
 import 'package:language_app/answer_button.dart';
 
+//brings to hard level page @Kelly O
+
 class HardLevel extends StatefulWidget{
   const HardLevel({super.key, required this.onSelectAnswer});
 
