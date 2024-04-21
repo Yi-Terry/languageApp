@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:language_app/home_screen/color_button.dart';
 import 'package:language_app/levels/easy_level.dart';
 import 'package:language_app/levels/medium_level.dart';
@@ -190,6 +191,7 @@ class _MyHomePageState extends State<MyHomePage>{
                   ]),
                   
                   const Spacer(),  //UNDER GOLD @Chris Z
+                  const SignOutButton()
             ],
           ),
         ),
