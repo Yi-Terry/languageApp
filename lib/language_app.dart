@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:language_app/app.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
-import 'package:language_app/login_screen.dart';
 import 'package:language_app/start_screen.dart';
 
 
