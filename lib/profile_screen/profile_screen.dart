@@ -65,4 +65,8 @@ class ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 97d0bfefd141e86f5c065f8e85f740d4176d4833
