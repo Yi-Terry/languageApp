@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:language_app/widgets/questions.dart';
 import 'package:language_app/answer_button.dart';
 
+// brings to easy level page @Kelly O
+
 class EasyLevel extends StatefulWidget{
   const EasyLevel({super.key, required this.onSelectAnswer});
 
   final void Function(String answer) onSelectAnswer;
-
+  List<QuizQuestion> getshuffledEasyQuestions(){
+    final shuffledList = List.of(easyQuestions); //copies list
+    shuffledList.shuffle(); //shuffles the copy in place
+    return shuffledList; //returns the list values
+  }
   @override
   State<EasyLevel> createState(){
     return _EasyLevelState();
@@ -15,7 +21,12 @@ class EasyLevel extends StatefulWidget{
 
 class _EasyLevelState extends State<EasyLevel>{
   var currentQuestionIndex = 0;
-
+  List<QuizQuestion>? shuffledQuestions;
+  @override
+  void initState(){
+     shuffledQuestions = widget.getshuffledEasyQuestions();
+     super.initState();
+  }
   void answerQuestion(String selectedAnswer){
     widget.onSelectAnswer(selectedAnswer);
 
@@ -26,7 +37,7 @@ class _EasyLevelState extends State<EasyLevel>{
 
   @override
   Widget build(context){
-    final currentQuestion = easyQuestions[currentQuestionIndex];
+    final currentQuestion = shuffledQuestions![currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,

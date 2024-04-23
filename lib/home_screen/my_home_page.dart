@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
+=======
+import 'package:firebase_auth/firebase_auth.dart';
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
 import 'package:flutter/material.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:language_app/home_screen/color_button.dart';
+import 'package:language_app/login_screen.dart';
+import 'package:language_app/widgets/questions.dart';
+import 'package:language_app/collect_rewards.dart';
 import 'package:language_app/levels/easy_level.dart';
 import 'package:language_app/levels/medium_level.dart';
 import 'package:language_app/levels/hard_level.dart';
@@ -19,10 +27,65 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> selectedAnswer = [];
   Widget? activeScreen;
 
+<<<<<<< HEAD
   void chooseAnswer(String answer) {
     selectedAnswer.add(answer);
   }
 
+=======
+  // resets list of selected answer array to 0, brings to home screen page @Kelly O
+  void getRewards() {
+    selectedAnswer.length = 0;
+    switchScreen();
+  }
+
+  // choose answer methods for each type of questions --> will bring them to results page @Kelly O
+  void chooseAnswerEasy(String answer) {
+    selectedAnswer.add(answer);
+    if (selectedAnswer.length == easyQuestions.length) {
+      setState(() {
+        activeScreen = CollectRewardsPage(
+            questions: easyQuestions,
+            chosenAnswers: selectedAnswer,
+            collectRewards: getRewards);
+      });
+    }
+  }
+
+  void chooseAnswerMedium(String answer) {
+    selectedAnswer.add(answer);
+    if (selectedAnswer.length == mediumQuestions.length) {
+      setState(() {
+        activeScreen = CollectRewardsPage(
+            questions: mediumQuestions,
+            chosenAnswers: selectedAnswer,
+            collectRewards: getRewards);
+      });
+    }
+  }
+
+  void chooseAnswerHard(String answer) {
+    selectedAnswer.add(answer);
+    if (selectedAnswer.length == hardQuestions.length) {
+      setState(() {
+        activeScreen = CollectRewardsPage(
+            questions: hardQuestions,
+            chosenAnswers: selectedAnswer,
+            collectRewards: getRewards);
+      });
+    }
+  }
+
+  void chooseAnswerPrem(String answer) {
+    selectedAnswer.add(answer);
+    if (selectedAnswer.length == premiumQuestions.length) {
+      setState(() {
+        //activeScreen = CollectRewardsPage(questions: premiumQuestions, chosenAnswers: selectedAnswer, collectRewards: getRewards);
+      });
+    }
+  }
+
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
   void switchScreen() {
     setState(() {
       // activeScreen = LoginScreen();
@@ -31,37 +94,68 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void goToEasy() {
+<<<<<<< HEAD
     //goes to the easy questions when called
+=======
+    //goes to the easy questions when called @Kelly O
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
     // print("easy function called");  - debug statement
     setState(() {
       // print("set state"); - debug statement
-      activeScreen = EasyLevel(onSelectAnswer: chooseAnswer);
+      activeScreen = EasyLevel(onSelectAnswer: chooseAnswerEasy);
     });
     //switchScreen();
   }
 
   void goToMedium() {
+<<<<<<< HEAD
     //goes to medium questions
     setState(() {
       activeScreen = MediumLevel(onSelectAnswer: chooseAnswer);
+=======
+    //goes to medium questions @Kelly O
+    setState(() {
+      activeScreen = MediumLevel(onSelectAnswer: chooseAnswerMedium);
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
     });
   }
 
   void goToHard() {
+<<<<<<< HEAD
     //goes to hard questions
     setState(() {
       activeScreen = HardLevel(onSelectAnswer: chooseAnswer);
+=======
+    //goes to hard questions @Kelly O
+    setState(() {
+      activeScreen = HardLevel(onSelectAnswer: chooseAnswerHard);
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
     });
   }
 
   void goToPremium() {
+<<<<<<< HEAD
     //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswer);
+=======
+    //goes to premium question when unlocked @Kelly O
+    //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswerPremium);
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
   }
 
   void goToProfile() {
     setState(() {
+<<<<<<< HEAD
       //goes to profile page
       activeScreen = const ProfilePage();
+=======
+      // if (activeScreen is MyHomePage) {
+      //   print("swiching to protile");
+      activeScreen = const ProfilePage();
+      //   print("switched to protile");
+      // } else if (activeScreen is ProfilePage) {
+      //   activeScreen = const MyHomePage();
+      // }
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
     });
   }
 
@@ -70,6 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Center(
       child: SafeArea(
         child: Scaffold(
+<<<<<<< HEAD
           body: activeScreen ??
               Column(
                 children: [
@@ -125,6 +220,50 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   const Spacer(),
 
+=======
+          appBar: AppBar(
+            backgroundColor: Colors.grey,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Row(
+                  children: [
+                    SizedBox(width: 5),
+                    ImageIcon(
+                      AssetImage('assets/images/points.png'),
+                      size: 50,
+                      color: Colors.blue,
+                    ),
+                    Text(
+                      '4,835',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                  ],
+                ),
+                const Text(
+                  'Spanish',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  onPressed: () {
+                    //routes to profile on press @Marcus F
+                    goToProfile();
+                  },
+                  icon: const Icon(Icons.account_circle),
+                ),
+              ],
+            ),
+          ),
+          body: activeScreen ??
+              Column(
+                children: [
+                  const SizedBox(
+                      height:
+                          10), //puts space between top and the first row @Chris Z
+
+                  const Spacer(),
+
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
                   Row(//Level 1
                       children: [
                     const Spacer(), //TO THE LEFT OF GREEN @Chris Z
@@ -182,10 +321,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   const Spacer(), //BETWEEN 2ND AND 3RD ROW @Chris Z
 
+<<<<<<< HEAD
                   Row(//Level 4
                       children: [
                     const Spacer(), //TO THE LEFT OF GOLD @Chris Z
 
+=======
+                  const Row(
+                    children: [
+                      Spacer(),
+                      ImageIcon(
+                        AssetImage('assets/images/premium_crown.png'),
+                        size: 50,
+                        color: Colors.orange,
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+
+                  Row(//Level 4
+                      children: [
+                    const Spacer(), //TO THE LEFT OF GOLD @Chris Z
+
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
                     Container(
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -202,6 +360,44 @@ class _MyHomePageState extends State<MyHomePage> {
                   ]),
 
                   const Spacer(), //UNDER GOLD @Chris Z
+<<<<<<< HEAD
+=======
+
+                  // place holder for logout function
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return AlertDialog(
+                                title: Text('Confirmation !!!'),
+                                content: Text('Are you sure to Log Out ? '),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(ctx).pop();
+                                    },
+                                    child: Text('No'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(ctx).pop();
+
+                                      FirebaseAuth.instance.signOut();
+
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(builder: (context) {
+                                        return LoginScreen();
+                                      }));
+                                    },
+                                    child: Text('Yes'),
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                      icon: const Icon(Icons.logout)),
+>>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
                 ],
               ),
         ),

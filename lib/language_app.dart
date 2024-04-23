@@ -27,7 +27,7 @@ class _LanguageAppState extends State<LanguageApp>
   void switchScreen(){
     setState(() {
       // activeScreen = LoginScreen();
-      activeScreen = MyHomePage();
+      activeScreen = const MyHomePage();
     });
   }
 
