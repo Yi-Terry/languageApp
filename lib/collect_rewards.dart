@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:language_app/widgets/questions.dart';
-
+import 'package:language_app/home_screen/my_home_page.dart';
 class CollectRewardsPage extends StatelessWidget {
 
   const CollectRewardsPage({super.key, required this.questions, required this.chosenAnswers, required this.collectRewards});
@@ -71,7 +71,13 @@ class CollectRewardsPage extends StatelessWidget {
               const Divider(color: Colors.black),
               Text("Score: $correctQuestions/${questions.length} = ${(correctQuestions/questions.length) * 100}"), // Score text 
               ElevatedButton(       // Collect Rewards button
-                onPressed: collectRewards,
+                // onPressed: collectRewards,
+                onPressed: (){
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+
+                     return const MyHomePage();
+                   }));
+                },
                 child: const Text("Collect Rewards"),
               ),
             ]
