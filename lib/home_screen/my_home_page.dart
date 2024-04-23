@@ -91,44 +91,40 @@ class _MyHomePageState extends State<MyHomePage>{
     return Center(
       child: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.grey,
+            title: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                          Row(
+                            children: [
+                              SizedBox(width: 5),
+                              ImageIcon(
+                                AssetImage('assets/images/points.png'),
+                                size: 50,
+                                color: Colors.blue,
+                              ),
+                              Text(
+                                '4,835',
+                                style: TextStyle(fontSize: 24),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'Spanish',
+                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            Icons.account_circle,
+                            size: 40,
+                          ),
+                        ],
+                      ),
+                    ),
+
           body: activeScreen ?? Column(
             children: [
-              Container(
-                color: Colors.grey,
-                child: const Row( //row for points, language name, profile @Chris Z
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 5,),
-                      ImageIcon(
-                        AssetImage('assets/images/points.png'),
-                        size: 50,
-                        color: Colors.blue,
-                      ),
-                      Text('4,835', style: TextStyle(fontSize: 24)),
-                    ],
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.only(right: 55.0), //shift spanish to left by padding to the right @Chris Z
-                      child: Text(
-                        'Spanish',
-                          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                                  ),
-                        ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.account_circle,
-                        size: 40,
-                      ),
-                      SizedBox(width: 5,)
-                    ],
-                  )
-                ],
-              ),
-              ),
+              
               const SizedBox(height: 10), //puts space between top and the first row @Chris Z
               
 
@@ -201,6 +197,18 @@ class _MyHomePageState extends State<MyHomePage>{
                   ]),
 
                   const Spacer(), //BETWEEN 2ND AND 3RD ROW @Chris Z
+
+                  const Row(
+                    children: [
+                      Spacer(),
+                       ImageIcon(
+                  AssetImage('assets/images/premium_crown.png'),
+                  size: 50,
+                  color: Colors.orange,
+                       ),
+                       Spacer(),
+                    ],
+                  ),
 
               Row( //Level 4
                 children: [
