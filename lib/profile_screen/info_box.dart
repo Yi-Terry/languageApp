@@ -15,10 +15,10 @@ class InfoBox extends StatelessWidget {
 //if edit button pressed on pswd, pop up field with new/confirm pswd
 
   void editContent(String newContent) async {
-    String value = '';
-    await showPrompt(
-      content
-    )
+    // String value = '';
+    // await showPrompt(
+    //   content
+    // )
   }
 
   @override
