@@ -22,12 +22,18 @@ class _MyHomePageState extends State<MyHomePage>{
   List<String> selectedAnswer = [];
   Widget? activeScreen;
 
+   // resets list of selected answer array to 0, brings to home screen page @Kelly O
+  void getRewards(){
+    selectedAnswer.length = 0;
+    switchScreen();
+  }
+
   // choose answer methods for each type of questions --> will bring them to results page @Kelly O
   void chooseAnswerEasy(String answer){
     selectedAnswer.add(answer);
     if(selectedAnswer.length == easyQuestions.length){
       setState((){
-        activeScreen = CollectRewardsPage(questions: easyQuestions, chosenAnswers: selectedAnswer);
+        activeScreen = CollectRewardsPage(questions: easyQuestions, chosenAnswers: selectedAnswer, collectRewards: getRewards);
       });
     }
   }
@@ -35,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage>{
     selectedAnswer.add(answer);
     if(selectedAnswer.length == mediumQuestions.length){
       setState((){
-        activeScreen = CollectRewardsPage(questions: mediumQuestions, chosenAnswers: selectedAnswer);
+        activeScreen = CollectRewardsPage(questions: mediumQuestions, chosenAnswers: selectedAnswer, collectRewards: getRewards);
       });
     }
   }
@@ -43,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage>{
     selectedAnswer.add(answer);
     if(selectedAnswer.length == hardQuestions.length){
       setState((){
-        activeScreen = CollectRewardsPage(questions: hardQuestions, chosenAnswers: selectedAnswer);
+        activeScreen = CollectRewardsPage(questions: hardQuestions, chosenAnswers: selectedAnswer, collectRewards: getRewards);
       });
     }
   }
@@ -51,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage>{
     selectedAnswer.add(answer);
     if(selectedAnswer.length == premiumQuestions.length){
       setState((){
-        //activeScreen = CollectRewardsPage(questions: premiumQuestions, chosenAnswers: selectedAnswer);
+        //activeScreen = CollectRewardsPage(questions: premiumQuestions, chosenAnswers: selectedAnswer, collectRewards: getRewards);
       });
     }
   }
