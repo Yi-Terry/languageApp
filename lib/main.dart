@@ -5,6 +5,7 @@ import 'package:language_app/firebase_options.dart';
 import 'package:language_app/app.dart';
 
 void main() async {
+  //establish connection to our databse in firebase
   WidgetsFlutterBinding.ensureInitialized();
  await Firebase.initializeApp(
    options: DefaultFirebaseOptions.currentPlatform,
