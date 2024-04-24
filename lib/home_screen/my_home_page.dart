@@ -8,6 +8,7 @@ import 'package:language_app/collect_rewards.dart';
 import 'package:language_app/levels/easy_level.dart';
 import 'package:language_app/levels/medium_level.dart';
 import 'package:language_app/levels/hard_level.dart';
+import 'package:language_app/profile_screen/profile_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -120,12 +121,18 @@ class _MyHomePageState extends State<MyHomePage>{
                             'Spanish',
                             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                           ),
-                          Icon(
-                            Icons.account_circle,
-                            size: 40,
-                          ),
-                        ],
+                          ],
                       ),
+                      actions: <Widget> [
+                        IconButton(       // Replaced icon with IconButton to navigate to the profile screen by clicking the icon. @Avinash K
+                            icon: const Icon(Icons.account_circle),
+                            iconSize: 40,
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => activeScreen!));  // Store the current page (activeScreen) in the navigator's stack
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const ProfilePage()));  // Replace the earlier activeScreen with a new profile page (this gets rid of the back button that would have appeared in the profile page if not for the first Navigator.push)
+                            },
+                          ),
+                      ],
                     ),
 
           body: activeScreen ?? Column(
