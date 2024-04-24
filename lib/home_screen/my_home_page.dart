@@ -1,5 +1,3 @@
-
-import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
@@ -24,12 +22,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> selectedAnswer = [];
   Widget? activeScreen;
-
-
-  void chooseAnswer(String answer) {
-    selectedAnswer.add(answer);
-  }
-
 
   // resets list of selected answer array to 0, brings to home screen page @Kelly O
   void getRewards() {
@@ -83,7 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   void switchScreen() {
     setState(() {
       // activeScreen = LoginScreen();
@@ -92,11 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void goToEasy() {
-
-    //goes to the easy questions when called
-
     //goes to the easy questions when called @Kelly O
-
     // print("easy function called");  - debug statement
     setState(() {
       // print("set state"); - debug statement
@@ -106,46 +93,26 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void goToMedium() {
-
-    //goes to medium questions
-    setState(() {
-      activeScreen = MediumLevel(onSelectAnswer: chooseAnswer);
-
     //goes to medium questions @Kelly O
     setState(() {
       activeScreen = MediumLevel(onSelectAnswer: chooseAnswerMedium);
-
     });
   }
 
   void goToHard() {
-
-    //goes to hard questions
-    setState(() {
-      activeScreen = HardLevel(onSelectAnswer: chooseAnswer);
-
     //goes to hard questions @Kelly O
     setState(() {
       activeScreen = HardLevel(onSelectAnswer: chooseAnswerHard);
-
     });
   }
 
   void goToPremium() {
-
-    //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswer);
-
     //goes to premium question when unlocked @Kelly O
     //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswerPremium);
-
   }
 
   void goToProfile() {
     setState(() {
-
-      //goes to profile page
-      activeScreen = const ProfilePage();
-
       // if (activeScreen is MyHomePage) {
       //   print("swiching to protile");
       activeScreen = const ProfilePage();
@@ -153,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // } else if (activeScreen is ProfilePage) {
       //   activeScreen = const MyHomePage();
       // }
-
     });
   }
 
@@ -162,79 +128,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Center(
       child: SafeArea(
         child: Scaffold(
-
-          body: activeScreen ??
-              Column(
-                children: [
-                  Container(
-                    color: Colors.grey,
-                    child: Row(
-                      //row for points, language name, profile @Chris Z
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Row(
-                          children: [
-                            SizedBox(
-                              width: 5,
-                            ),
-                            ImageIcon(
-                              AssetImage('assets/images/points.png'),
-                              size: 50,
-                              color: Colors.blue,
-                            ),
-                            Text('4,835', style: TextStyle(fontSize: 24)),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              right:
-                                  55.0), //shift spanish to left by padding to the right @Chris Z
-                          child: Text(
-                            'Spanish',
-
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                          ),
-                          ],
-                      ),
-                      actions: <Widget> [
-                        IconButton(       // Replaced icon with IconButton to navigate to the profile screen by clicking the icon. @Avinash K
-                            icon: const Icon(Icons.account_circle),
-                            iconSize: 40,
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => activeScreen!));  // Store the current page (activeScreen) in the navigator's stack
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const ProfilePage()));  // Replace the earlier activeScreen with a new profile page (this gets rid of the back button that would have appeared in the profile page if not for the first Navigator.push)
-                            },
-                          ),
-
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                //routes to profile on press @Marcus F
-                                goToProfile();
-                              },
-                              icon: const Icon(Icons.account_circle),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            )
-                          ],
-                        )
-
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                      height:
-                          10), //puts space between top and the first row @Chris Z
-
-                  const Spacer(),
-
-
           appBar: AppBar(
             backgroundColor: Colors.grey,
             title: Row(
@@ -276,7 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           10), //puts space between top and the first row @Chris Z
 
                   const Spacer(),
-
 
                   Row(//Level 1
                       children: [
@@ -335,12 +227,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   const Spacer(), //BETWEEN 2ND AND 3RD ROW @Chris Z
 
-
-                  Row(//Level 4
-                      children: [
-                    const Spacer(), //TO THE LEFT OF GOLD @Chris Z
-
-
                   const Row(
                     children: [
                       Spacer(),
@@ -356,7 +242,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   Row(//Level 4
                       children: [
                     const Spacer(), //TO THE LEFT OF GOLD @Chris Z
-
 
                     Container(
                       decoration: BoxDecoration(
@@ -374,8 +259,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ]),
 
                   const Spacer(), //UNDER GOLD @Chris Z
-
-
 
                   // place holder for logout function
                   IconButton(
@@ -411,15 +294,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                       },
                       icon: const Icon(Icons.logout)),
-
                 ],
               ),
         ),
       ),
     );
-
-  }  
-
   }
-
 }
