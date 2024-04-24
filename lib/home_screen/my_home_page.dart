@@ -156,10 +156,10 @@ Future<int> fetchUserPoints() async{ //getting user ponts
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                 Row(
                   children: [
-                    SizedBox(width: 5),
-                    ImageIcon(
+                    const SizedBox(width: 5),
+                    const ImageIcon(
                       AssetImage('assets/images/points.png'),
                       size: 50,
                       color: Colors.blue,
@@ -337,5 +337,5 @@ Future<int> fetchUserPoints() async{ //getting user ponts
       );
   }
 }
-}
+
 
