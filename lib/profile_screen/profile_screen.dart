@@ -52,9 +52,11 @@ class ProfilePageState extends State<ProfilePage> {
                           IconButton(
                             onPressed: () {
                               //routes to profile on press @Marcus F
-                              goToHome();
+                              //goToHome();
+                              Navigator.pop(context); // Return to whatever screen was before this profile page @Avinash K
                             },
-                            icon: const Icon(Icons.account_circle),
+                            icon: const Icon(Icons.arrow_back),   // Back icon instead of profile icon
+                            iconSize: 40,
                             alignment: Alignment.topLeft,
                           )
                         ],
