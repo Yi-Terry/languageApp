@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:language_app/profile_screen/info_box.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -28,7 +29,13 @@ class ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  FirebaseDatabase database = FirebaseDatabase.instance;
+  //Firebase stuff
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<User?> getCurrentUser() async {
+    //getting the current user
+    return _auth.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {

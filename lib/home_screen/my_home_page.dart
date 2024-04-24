@@ -124,27 +124,32 @@ class _MyHomePageState extends State<MyHomePage> {
       // }
     });
   }
-  
+
   //Firebase stuff
-final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
-Future<User?> getCurrentUser() async{ //getting the current user
-  return _auth.currentUser;
-}
-
-Future<int> fetchUserPoints() async{ //getting user ponts
-  final User? currentUser = await getCurrentUser(); 
-  if(currentUser !=null){
-   final DatabaseReference ref = FirebaseDatabase.instance.ref(); //referencing database
-   final DatabaseEvent event = await ref.child('Users/${currentUser.uid}/points').once(); //going to the table to get this
-   final DataSnapshot snapshot = event.snapshot; //handling the data into a snapshot
-   if(snapshot.value != null){
-    return snapshot.value as int; //returning the value as an int
-   } 
+  Future<User?> getCurrentUser() async {
+    //getting the current user
+    return _auth.currentUser;
   }
-  return 0; //otherwise return 0
-}
+
+  Future<int> fetchUserPoints() async {
+    //getting user ponts
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/points')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,10 +161,10 @@ Future<int> fetchUserPoints() async{ //getting user ponts
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                Row(
                   children: [
-                    SizedBox(width: 5),
-                    ImageIcon(
+                    const SizedBox(width: 5),
+                    const ImageIcon(
                       AssetImage('assets/images/points.png'),
                       size: 50,
                       color: Colors.blue,
@@ -320,22 +325,26 @@ Future<int> fetchUserPoints() async{ //getting user ponts
       ),
     );
   }
-   Widget _buildPointsWidget(){ //widget to get points
+
+  Widget _buildPointsWidget() {
+    //widget to get points
     return FutureBuilder<int>(
       future: fetchUserPoints(), //runs this program
-      builder: (context, snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){ //loading snapshot of dat
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          //loading snapshot of dat
           return const Text('Loading...');
-        }else if(snapshot.hasError){ //error handling
-         return Text('Error: ${snapshot.error}');
-        }else{
-         final int userPoints = snapshot.data ?? 0; //getting snapshot of user data
-         return Text('$userPoints', style: const TextStyle(fontSize: 24), //displaying it
-         );
+        } else if (snapshot.hasError) {
+          //error handling
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final int userPoints =
+              snapshot.data ?? 0; //getting snapshot of user data
+          return Text(
+            '$userPoints', style: const TextStyle(fontSize: 24), //displaying it
+          );
         }
       },
-      );
+    );
   }
 }
-}
-
