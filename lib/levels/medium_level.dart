@@ -16,7 +16,6 @@ class MediumLevel extends StatefulWidget{
 }
 
 class _MediumLevelState extends State<MediumLevel>{
-  var questionType = 2;
   var currentQuestionIndex = 0;
 
   void answerQuestion(String selectedAnswer){
@@ -29,7 +28,7 @@ class _MediumLevelState extends State<MediumLevel>{
 
   @override
   Widget build(context){
-    final currentQuestion = mediumQuestions[currentQuestionIndex];
+    final currentQuestion = mq[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,

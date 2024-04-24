@@ -21,12 +21,7 @@ class EasyLevel extends StatefulWidget{
 
 class _EasyLevelState extends State<EasyLevel>{
   var currentQuestionIndex = 0;
-  List<QuizQuestion>? shuffledQuestions;
-  @override
-  void initState(){
-     shuffledQuestions = widget.getshuffledEasyQuestions();
-     super.initState();
-  }
+ 
   void answerQuestion(String selectedAnswer){
     widget.onSelectAnswer(selectedAnswer);
 
@@ -37,7 +32,7 @@ class _EasyLevelState extends State<EasyLevel>{
 
   @override
   Widget build(context){
-    final currentQuestion = shuffledQuestions![currentQuestionIndex];
+    final currentQuestion = eq[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,
