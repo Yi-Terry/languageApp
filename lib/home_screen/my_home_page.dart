@@ -157,6 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     goToProfile();
                   },
                   icon: const Icon(Icons.account_circle),
+                  iconSize: 40,
                 ),
               ],
             ),

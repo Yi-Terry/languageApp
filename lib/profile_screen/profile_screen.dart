@@ -34,7 +34,7 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: const [
+        children: [
           SizedBox(height: 40),
           Icon(
             Icons.person,
@@ -56,7 +56,13 @@ class ProfilePageState extends State<ProfilePage> {
             isPswd: false,
           ),
           InfoBox(
-              content: "password123!", sectionTitle: "Password: ", isPswd: true)
+              content: "password123!", sectionTitle: "Password: ", isPswd: true),
+          ElevatedButton(onPressed: () {      // sends the user to the home page @Terry Y
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                    return const MyHomePage();  
+                  }));
+                }, child: const Text('Return to home')),
+              
         ],
       ),
     );
