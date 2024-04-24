@@ -28,16 +28,15 @@ class _MyHomePageState extends State<MyHomePage> {
   // resets list of selected answer array to 0, brings to home screen page @Kelly O
   void getRewards() {
     selectedAnswer.length = 0;
-    switchScreen();
   }
 
   // choose answer methods for each type of questions --> will bring them to results page @Kelly O
   void chooseAnswerEasy(String answer) {
     selectedAnswer.add(answer);
-    if (selectedAnswer.length == easyQuestions.length) {
+    if (selectedAnswer.length == eq.length) {
       setState(() {
         activeScreen = CollectRewardsPage(
-            questions: easyQuestions,
+            questions: eq,
             chosenAnswers: selectedAnswer,
             collectRewards: getRewards);
       });
@@ -46,10 +45,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void chooseAnswerMedium(String answer) {
     selectedAnswer.add(answer);
-    if (selectedAnswer.length == mediumQuestions.length) {
+    if (selectedAnswer.length == mq.length) {
       setState(() {
         activeScreen = CollectRewardsPage(
-            questions: mediumQuestions,
+            questions: mq,
             chosenAnswers: selectedAnswer,
             collectRewards: getRewards);
       });
@@ -58,10 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void chooseAnswerHard(String answer) {
     selectedAnswer.add(answer);
-    if (selectedAnswer.length == hardQuestions.length) {
+    if (selectedAnswer.length == hq.length) {
       setState(() {
         activeScreen = CollectRewardsPage(
-            questions: hardQuestions,
+            questions: hq,
             chosenAnswers: selectedAnswer,
             collectRewards: getRewards);
       });
@@ -70,11 +69,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void chooseAnswerPrem(String answer) {
     selectedAnswer.add(answer);
-    if (selectedAnswer.length == premiumQuestions.length) {
-      setState(() {
-        //activeScreen = CollectRewardsPage(questions: premiumQuestions, chosenAnswers: selectedAnswer, collectRewards: getRewards);
-      });
-    }
+    // if (selectedAnswer.length == pq.length) {
+    //   setState(() {
+    //     activeScreen = CollectRewardsPage(questions: pq, chosenAnswers: selectedAnswer, collectRewards: getRewards);
+    //   });
+    // }
   }
 
   void switchScreen() {
