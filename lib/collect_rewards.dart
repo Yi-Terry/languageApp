@@ -24,7 +24,7 @@ class CollectRewardsPage extends StatelessWidget {
                   for (var i = 0; i < questions.length; i++)
                     ListTile (      // Each ListTile (scroll item) contains the question number and the points earned. 
                       leading: Text("Question $i"),
-                      trailing: Text("ptCount"), //Correct question: 10 pts * difficulty multiplier. Incorrect question: 0 pts.
+                      trailing: const Text("ptCount"), //Correct question: 10 pts * difficulty multiplier. Incorrect question: 0 pts.
                     )
                 ],
               ),

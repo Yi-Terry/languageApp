@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:language_app/home_screen/color_button.dart';
@@ -17,6 +19,7 @@ class MyHomePage extends StatefulWidget {
     return _MyHomePageState();
   }
 }
+
 
 class _MyHomePageState extends State<MyHomePage>{
   List<String> selectedAnswer = [];
@@ -85,6 +88,28 @@ class _MyHomePageState extends State<MyHomePage>{
   void goToPremium(){ //goes to premium question when unlocked @Kelly O
     //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswerPremium);
   }
+
+//Firebase stuff
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
+Future<User?> getCurrentUser() async{ //getting the current user
+  return _auth.currentUser;
+}
+
+Future<int> fetchUserPoints() async{ //getting user ponts
+  final User? currentUser = await getCurrentUser(); 
+  if(currentUser !=null){
+   final DatabaseReference ref = FirebaseDatabase.instance.ref(); //referencing database
+   final DatabaseEvent event = await ref.child('Users/${currentUser.uid}/points').once(); //going to the table to get this
+   final DataSnapshot snapshot = event.snapshot; //handling the data into a snapshot
+   if(snapshot.value != null){
+    return snapshot.value as int; //returning the value as an int
+   } 
+  }
+  return 0; //otherwise return 0
+}
+
   
   @override
   Widget build(BuildContext context) {
@@ -95,29 +120,31 @@ class _MyHomePageState extends State<MyHomePage>{
             children: [
               Container(
                 color: Colors.grey,
-                child: const Row( //row for points, language name, profile @Chris Z
+                child: Row( //row for points, language name, profile @Chris Z
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      SizedBox(width: 5,),
-                      ImageIcon(
+                      const SizedBox(width: 5,),
+                      const ImageIcon(
                         AssetImage('assets/images/points.png'),
                         size: 50,
                         color: Colors.blue,
                       ),
-                      Text('4,835', style: TextStyle(fontSize: 24)),
+                      // Text('4,835', style: TextStyle(fontSize: 24)),
+                      _buildPointsWidget(), //calling the widget here
                     ],
                   ),
 
-                  Padding(
+
+                 const Padding(
                     padding: EdgeInsets.only(right: 55.0), //shift spanish to left by padding to the right @Chris Z
                       child: Text(
                         'Spanish',
                           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                                   ),
                         ),
-                  Row(
+                 const Row(
                     children: [
                       Icon(
                         Icons.account_circle,
@@ -232,15 +259,15 @@ class _MyHomePageState extends State<MyHomePage>{
 
             showDialog(context: context, builder: (ctx){
               return AlertDialog(
-                title: Text('Confirmation !!!'),
-                content: Text('Are you sure to Log Out ? '),
+                title: const Text('Confirmation !!!'),
+                content: const Text('Are you sure to Log Out ? '),
                 actions: [
 
                   TextButton(onPressed: (){
 
                     Navigator.of(ctx).pop();
 
-                  }, child: Text('No'),),
+                  }, child: const Text('No'),),
 
 
                   TextButton(onPressed: (){
@@ -249,10 +276,10 @@ class _MyHomePageState extends State<MyHomePage>{
                     FirebaseAuth.instance.signOut();
 
                     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-                      return  LoginScreen();
+                      return const LoginScreen();
                     }));
 
-                  }, child: Text('Yes'),),
+                  }, child: const Text('Yes'),),
 
                 ],
               );
@@ -265,4 +292,20 @@ class _MyHomePageState extends State<MyHomePage>{
       ),
     );
   }  
+  Widget _buildPointsWidget(){ //widget to get points
+    return FutureBuilder<int>(
+      future: fetchUserPoints(), //runs this program
+      builder: (context, snapshot){
+        if(snapshot.connectionState == ConnectionState.waiting){ //loading snapshot of dat
+          return const Text('Loading...');
+        }else if(snapshot.hasError){ //error handling
+         return Text('Error: ${snapshot.error}');
+        }else{
+         final int userPoints = snapshot.data ?? 0; //getting snapshot of user data
+         return Text('$userPoints', style: const TextStyle(fontSize: 24), //displaying it
+         );
+        }
+      },
+      );
+  }
 }
