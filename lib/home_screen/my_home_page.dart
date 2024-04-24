@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+
 import 'package:flutter/foundation.dart';
-=======
 import 'package:firebase_auth/firebase_auth.dart';
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:language_app/home_screen/color_button.dart';
@@ -27,12 +25,12 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> selectedAnswer = [];
   Widget? activeScreen;
 
-<<<<<<< HEAD
+
   void chooseAnswer(String answer) {
     selectedAnswer.add(answer);
   }
 
-=======
+
   // resets list of selected answer array to 0, brings to home screen page @Kelly O
   void getRewards() {
     selectedAnswer.length = 0;
@@ -85,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
   void switchScreen() {
     setState(() {
       // activeScreen = LoginScreen();
@@ -94,11 +92,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void goToEasy() {
-<<<<<<< HEAD
+
     //goes to the easy questions when called
-=======
+
     //goes to the easy questions when called @Kelly O
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
     // print("easy function called");  - debug statement
     setState(() {
       // print("set state"); - debug statement
@@ -108,46 +106,46 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void goToMedium() {
-<<<<<<< HEAD
+
     //goes to medium questions
     setState(() {
       activeScreen = MediumLevel(onSelectAnswer: chooseAnswer);
-=======
+
     //goes to medium questions @Kelly O
     setState(() {
       activeScreen = MediumLevel(onSelectAnswer: chooseAnswerMedium);
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
     });
   }
 
   void goToHard() {
-<<<<<<< HEAD
+
     //goes to hard questions
     setState(() {
       activeScreen = HardLevel(onSelectAnswer: chooseAnswer);
-=======
+
     //goes to hard questions @Kelly O
     setState(() {
       activeScreen = HardLevel(onSelectAnswer: chooseAnswerHard);
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
     });
   }
 
   void goToPremium() {
-<<<<<<< HEAD
+
     //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswer);
-=======
+
     //goes to premium question when unlocked @Kelly O
     //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswerPremium);
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
   }
 
   void goToProfile() {
     setState(() {
-<<<<<<< HEAD
+
       //goes to profile page
       activeScreen = const ProfilePage();
-=======
+
       // if (activeScreen is MyHomePage) {
       //   print("swiching to protile");
       activeScreen = const ProfilePage();
@@ -155,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // } else if (activeScreen is ProfilePage) {
       //   activeScreen = const MyHomePage();
       // }
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
     });
   }
 
@@ -164,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Center(
       child: SafeArea(
         child: Scaffold(
-<<<<<<< HEAD
+
           body: activeScreen ??
               Column(
                 children: [
@@ -193,6 +191,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                   55.0), //shift spanish to left by padding to the right @Chris Z
                           child: Text(
                             'Spanish',
+
+                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                          ],
+                      ),
+                      actions: <Widget> [
+                        IconButton(       // Replaced icon with IconButton to navigate to the profile screen by clicking the icon. @Avinash K
+                            icon: const Icon(Icons.account_circle),
+                            iconSize: 40,
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => activeScreen!));  // Store the current page (activeScreen) in the navigator's stack
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => const ProfilePage()));  // Replace the earlier activeScreen with a new profile page (this gets rid of the back button that would have appeared in the profile page if not for the first Navigator.push)
+                            },
+                          ),
+
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
@@ -211,6 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             )
                           ],
                         )
+
                       ],
                     ),
                   ),
@@ -220,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   const Spacer(),
 
-=======
+
           appBar: AppBar(
             backgroundColor: Colors.grey,
             title: Row(
@@ -263,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   const Spacer(),
 
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
                   Row(//Level 1
                       children: [
                     const Spacer(), //TO THE LEFT OF GREEN @Chris Z
@@ -321,12 +335,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   const Spacer(), //BETWEEN 2ND AND 3RD ROW @Chris Z
 
-<<<<<<< HEAD
+
                   Row(//Level 4
                       children: [
                     const Spacer(), //TO THE LEFT OF GOLD @Chris Z
 
-=======
+
                   const Row(
                     children: [
                       Spacer(),
@@ -343,7 +357,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                     const Spacer(), //TO THE LEFT OF GOLD @Chris Z
 
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
                     Container(
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -360,8 +374,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ]),
 
                   const Spacer(), //UNDER GOLD @Chris Z
-<<<<<<< HEAD
-=======
+
+
 
                   // place holder for logout function
                   IconButton(
@@ -397,11 +411,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                       },
                       icon: const Icon(Icons.logout)),
->>>>>>> 4fdebb65064166ab2399e2812ce311e3a50699ad
+
                 ],
               ),
         ),
       ),
     );
+
+  }  
+
   }
+
 }
