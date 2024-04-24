@@ -17,7 +17,7 @@ class ColoredButton extends StatelessWidget {
   Widget build(context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        fixedSize: const Size(200, 200),
+        fixedSize: const Size(180, 180),
         backgroundColor: color,
       ),
       onPressed: onTap,
