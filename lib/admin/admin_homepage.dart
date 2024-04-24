@@ -26,7 +26,7 @@ class AdminHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Row(children: [
             Text(
-              'Administator Page',
+              'Administrator Page',
               style: TextStyle(
                 color: Colors.purple,
                 fontSize: 32.0,
