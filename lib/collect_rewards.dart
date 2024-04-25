@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:language_app/widgets/questions.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CollectRewardsPage extends StatelessWidget {
-  const CollectRewardsPage(
+  CollectRewardsPage(
       {super.key,
       required this.questions,
       required this.chosenAnswers,
@@ -37,6 +39,37 @@ class CollectRewardsPage extends StatelessWidget {
     );
   }
 
+  // Took Firebase stuff from my_home_page @ Avinash K
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<User?> getCurrentUser() async{ //getting the current user
+    return _auth.currentUser;
+  }
+
+  Future<int> fetchUserPoints() async{ //getting user ponts
+    final User? currentUser = await getCurrentUser(); 
+    if(currentUser !=null){
+    final DatabaseReference ref = FirebaseDatabase.instance.ref(); //referencing database
+    final DatabaseEvent event = await ref.child('Users/${currentUser.uid}/points').once(); //going to the table to get this
+    final DataSnapshot snapshot = event.snapshot; //handling the data into a snapshot
+    if(snapshot.value != null){
+      return snapshot.value as int; //returning the value as an int
+    } 
+    }
+    return 0; //otherwise return 0
+  }
+
+  // Updates the current user's points in the database. pointsToBeAdded = earnedPoints + currentPoints. @ Avinash K
+  void updateUserPoints(int pointsToBeAdded) async {
+    final User? currentUser = await getCurrentUser();
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Users/${currentUser?.uid}");     // Access the record of the current user
+    
+    // Update the user's points
+    await ref.update({
+      "points" : pointsToBeAdded
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     int difficultyMultiplier =
@@ -59,12 +92,37 @@ class CollectRewardsPage extends StatelessWidget {
     int correctQuestions = summaryData
         .where(
           (data) => data['correct_answer'] == data['user_answer'],
+<<<<<<< HEAD
         )
         .length;
     for (var data in summaryData) {
       if (data['user_answer'] == data['correct_answer'])
         earnedPoints += 10 * difficultyMultiplier;
     }
+=======
+        ).length;
+
+    int currentPoints = 0;    // The amount of points the user had before answering the questions.
+
+    // This is to get the int value of the Future<int> value from fetchUserPoints(). @ Avinash K
+    Widget? getCurrentPoints() {
+      return FutureBuilder<int>(
+        future: fetchUserPoints(), 
+        builder: (context, snapshot) {
+          currentPoints = snapshot.data ?? 0;
+          return const Text("");
+        }
+      );
+    }
+
+    earnedPoints = correctQuestions * 10 * difficultyMultiplier;    // Simpler calculation for earnedPoints @ Avinash K
+    /*
+    for(var data in summaryData){
+      if(data['user_answer'] == data['correct_answer'])
+          earnedPoints += 10 * difficultyMultiplier;
+    }
+    */
+>>>>>>> 9389313053082907285a885ea951d90f9f73cfbe
     return SizedBox(
       height: 500,
       child: Column(
@@ -116,14 +174,18 @@ class CollectRewardsPage extends StatelessWidget {
                 const SizedBox(width: 10)
               ],
             ),
+          getCurrentPoints()!,   // Set the value of currentPoints @Avinash K
           const Divider(color: Colors.black),
           Text(
-              "Score: $correctQuestions/${questions.length} = ${(correctQuestions / questions.length) * 100}"), // Score text
+              "Score: $correctQuestions/${questions.length} = ${((correctQuestions / questions.length) * 100).toInt()}%"), // Score text with integer percentage
           Text("Points Earned: $earnedPoints"),
           ElevatedButton(
             // Collect Rewards button
             // onPressed: collectRewards,
             onPressed: () {
+              int totalPoints = currentPoints + earnedPoints;
+              updateUserPoints(totalPoints);  // Update the user's points with the addition of earnedPoints in the database.
+
               questions.shuffle();
               Navigator.of(context)
                   .pushReplacement(MaterialPageRoute(builder: (context) {
