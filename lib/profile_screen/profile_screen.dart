@@ -92,7 +92,6 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
         body: FutureBuilder(
       //widget to get user info
       future:
@@ -138,10 +137,19 @@ class ProfilePageState extends State<ProfilePage> {
                 isPswd: false,
               ),
               InfoBox(
-                  //add update password screen and logic
+                  //add update password scrFeen and logic
                   content: userPassword,
                   sectionTitle: "Password: ",
-                  isPswd: true)
+                  isPswd: true),
+              ElevatedButton(
+                  onPressed: () {
+                    // sends the user to the home page @Terry Y
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const MyHomePage();
+                    }));
+                  },
+                  child: const Text('Return to home')),
             ],
           );
         }
@@ -149,75 +157,3 @@ class ProfilePageState extends State<ProfilePage> {
     ));
   }
 }
-=======
-      body: ListView(
-        children: [
-          SizedBox(height: 40),
-          Icon(
-            Icons.person,
-            size: 60,
-          ),
-          Text(
-            "user@email.example",
-            textAlign: TextAlign.center,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 35),
-            child: Text(
-              "Account Details:",
-            ),
-          ),
-          InfoBox(
-            content: "user1234",
-            sectionTitle: "Username: ",
-            isPswd: false,
-          ),
-          InfoBox(
-              content: "password123!", sectionTitle: "Password: ", isPswd: true),
-          ElevatedButton(onPressed: () {      // sends the user to the home page @Terry Y
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                    return const MyHomePage();  
-                  }));
-                }, child: const Text('Return to home')),
-              
-        ],
-      ),
-    );
-  }
-}
-
-
-// child: SafeArea(
-        //   child: Scaffold(
-        //     body: activeScreen ??
-        //         Column(
-        //           children: [
-        //             Container(
-        //                 color: Colors.grey,
-        //                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        //                 child: Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                   children: [
-        //                     const Padding(
-        //                       padding: EdgeInsets.only(right: 55.0),
-        //                       child: Text(
-        //                         'Profile',
-        //                         style: TextStyle(
-        //                             fontSize: 30, fontWeight: FontWeight.bold),
-        //                         textAlign: TextAlign.center,
-        //                       ),
-        //                     ),
-        //                     IconButton(
-        //                       onPressed: () {
-        //                         //routes to profile on press @Marcus F
-        //                         goToHome();
-        //                       },
-        //                       icon: const Icon(Icons.account_circle),
-        //                       alignment: Alignment.topLeft,
-        //                     )
-        //                   ],
-        //                 ))
-        //           ],
-        //         ),
-        //   ),
->>>>>>> 9389313053082907285a885ea951d90f9f73cfbe
