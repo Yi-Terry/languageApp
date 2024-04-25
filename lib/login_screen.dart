@@ -5,6 +5,7 @@ import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:language_app/signup_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:language_app/signup_screen_test.dart';
+import 'package:language_app/admin/admin_login.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -126,6 +127,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     return const SignUpScreenTest(); //sends the user to the signUpScreen page
                   }));
                 }, child: const Text('Register Now')),
+              ],
+            ),
+
+            SizedBox(height: 500,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                    return const AdminLogin(); //sends the user to the signUpScreen page
+                  }));
+                }, child: const Text('Administrator Login')),
               ],
             )
           ],
