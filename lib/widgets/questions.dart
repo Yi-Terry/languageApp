@@ -72,7 +72,7 @@ const mediumQuestions = [
 
 const hardQuestions = [
   QuizQuestion(
-    'Translate the following: "My favorite food is tacos"?',
+    'Translate: "My favorite food is tacos"?',
     [
       'Mi comida favorita son los tacos', //correct]
       'Yo comido favorito es los tacos',
@@ -80,7 +80,7 @@ const hardQuestions = [
     ]
   ),
   QuizQuestion(
-    'Translate the following: "Where is the library?"?',
+    'Translate: "Where is the library?"?',
     [
       'Donde está la biblioteca?', //correct
       'Whero iso the librario?',
@@ -88,7 +88,7 @@ const hardQuestions = [
     ]
   ),
   QuizQuestion(
-    'Translate the following: Me amo a los perros pero odio a los gatos.',
+    'Translate: Me amo a los perros pero odio a los gatos.',
     [
       'I love dogs but I hate cats.', //correct
       'I like parrots and gates',
