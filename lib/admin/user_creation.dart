@@ -1,37 +1,65 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:language_app/home_screen/my_home_page.dart';
-//import 'package:language_app/language_app.dart';
+final TextEditingController nameController = TextEditingController();
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
 
-class UserCreation extends StatelessWidget {
-  const UserCreation({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          print("button pressed");
-        },
-          icon: Icon(Icons.add),
-          label: Text("Create User"),
-        ),
-      appBar: AppBar(
-        title: Row(children: [
-            Text(
-              'Create a New User',
-              style: TextStyle(
-                //color: Colors.purple,
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold
+void userCreationSheet(BuildContext context){
+  showModalBottomSheet(
+    isScrollControlled: true,
+    backgroundColor: Colors.blue[100],
+    context: context, 
+    builder: (BuildContext) {
+      return Padding(
+        padding: EdgeInsets.only(
+          top: 20, 
+          right: 20, 
+          left: 20, 
+          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Center(
+              child: Text(
+                "Create a New User",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            const SizedBox(
-              height: 30,
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: "Name",
+              ),
             ),
-          ],),
-        automaticallyImplyLeading: false,
-      ),
-    );
-  }
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: "Email",
+              ),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(
+                labelText: "Password",
+              ),
+            ),
+            const SizedBox(height: 20,),
+            ElevatedButton(
+              onPressed: (){
+                
+
+                nameController.clear();
+                emailController.clear();
+                passwordController.clear();
+                Navigator.pop(context);
+              }, 
+              child: const Text("Create")),
+          ],
+        ),
+      );
+    });
 }

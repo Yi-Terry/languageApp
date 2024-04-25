@@ -1,25 +1,25 @@
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:language_app/admin/user_creation.dart';
+import 'package:firebase_database/firebase_database.dart';
 //import 'package:language_app/home_screen/my_home_page.dart';
 //import 'package:language_app/language_app.dart';
+
+DatabaseReference ref = FirebaseDatabase.instance.ref().child('Users');
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({super.key});
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UserCreation(),
-                ),
-              );
-          print("button pressed");
-        },
+        onPressed: () => userCreationSheet(context),
+        
           icon: Icon(Icons.add),
           label: Text("Create User", style: TextStyle(color: Colors.purple, fontSize: 18.0, fontWeight: FontWeight.bold),),
         ),
@@ -64,6 +64,20 @@ class AdminHomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Expanded(child: FirebaseAnimatedList(query: ref, 
+                    // itemBuilder: (context,snapshot,index,animation){
+                    //   return ListTile(
+                    //     title: 
+                    //         Text("Name: " + snapshot.child("fullName").value.toString(), 
+                    //         style: TextStyle(
+                    //         color: Colors.blue, 
+                    //         fontSize: 20.0, 
+                    //         fontWeight: FontWeight.bold), 
+                    //     ),
+                    //   );
+                    // }))
+
+
                     Row(
                       children: [
                         Text("Name: Benjamin Smith", 
@@ -84,7 +98,7 @@ class AdminHomePage extends StatelessWidget {
                         fontSize: 20.0, 
                         fontWeight: FontWeight.bold), 
                     ),
-                    Text("Jewels: 4378", 
+                    Text("Points: 4378", 
                       style: TextStyle(
                         color: Colors.blue, 
                         fontSize: 20.0, 
