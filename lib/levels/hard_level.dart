@@ -16,7 +16,7 @@ class HardLevel extends StatefulWidget{
 }
 
 class _HardLevelState extends State<HardLevel>{
-  var questionType = 3;
+
   var currentQuestionIndex = 0;
 
   void answerQuestion(String selectedAnswer){
@@ -29,7 +29,7 @@ class _HardLevelState extends State<HardLevel>{
 
   @override
   Widget build(context){
-    final currentQuestion = hardQuestions[currentQuestionIndex];
+    final currentQuestion = hq[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,

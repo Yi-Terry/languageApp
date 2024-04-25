@@ -10,6 +10,12 @@ class QuizQuestion{ //make a quiz question object
   }
 }
 
+List<QuizQuestion> getShuffledQuestions(List<QuizQuestion> questions){
+    final shuffledList = List.of(questions); //copies list
+    shuffledList.shuffle(); //shuffles the copy in place
+    return shuffledList; //returns the list values
+  }
+
 const easyQuestions = [
   QuizQuestion(
     'What does "¡Hola!" mean?',
@@ -94,3 +100,8 @@ const hardQuestions = [
 const premiumQuestions = [
 
 ];
+
+var eq = getShuffledQuestions(easyQuestions);
+var mq = getShuffledQuestions(mediumQuestions);
+var hq = getShuffledQuestions(hardQuestions);
+// var pq = getShuffledQuestions(premiumQuestions);
