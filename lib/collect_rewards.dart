@@ -42,19 +42,25 @@ class CollectRewardsPage extends StatelessWidget {
   // Took Firebase stuff from my_home_page @ Avinash K
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<User?> getCurrentUser() async{ //getting the current user
+  Future<User?> getCurrentUser() async {
+    //getting the current user
     return _auth.currentUser;
   }
 
-  Future<int> fetchUserPoints() async{ //getting user ponts
-    final User? currentUser = await getCurrentUser(); 
-    if(currentUser !=null){
-    final DatabaseReference ref = FirebaseDatabase.instance.ref(); //referencing database
-    final DatabaseEvent event = await ref.child('Users/${currentUser.uid}/points').once(); //going to the table to get this
-    final DataSnapshot snapshot = event.snapshot; //handling the data into a snapshot
-    if(snapshot.value != null){
-      return snapshot.value as int; //returning the value as an int
-    } 
+  Future<int> fetchUserPoints() async {
+    //getting user ponts
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/points')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
     }
     return 0; //otherwise return 0
   }
@@ -62,17 +68,17 @@ class CollectRewardsPage extends StatelessWidget {
   // Updates the current user's points in the database. pointsToBeAdded = earnedPoints + currentPoints. @ Avinash K
   void updateUserPoints(int pointsToBeAdded) async {
     final User? currentUser = await getCurrentUser();
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Users/${currentUser?.uid}");     // Access the record of the current user
-    
+    DatabaseReference ref = FirebaseDatabase.instance.ref(
+        "Users/${currentUser?.uid}"); // Access the record of the current user
+
     // Update the user's points
-    await ref.update({
-      "points" : pointsToBeAdded
-    });
+    await ref.update({"points": pointsToBeAdded});
   }
 
   @override
   Widget build(BuildContext context) {
-    int difficultyMultiplier = 0; // Multiplied with the point total based on difficulty (easy = 1, medium = 2, hard = 3, premium = 5)
+    int difficultyMultiplier =
+        0; // Multiplied with the point total based on difficulty (easy = 1, medium = 2, hard = 3, premium = 5)
     int earnedPoints = 0;
 
     // checking the type of question @Kelly O
@@ -91,22 +97,25 @@ class CollectRewardsPage extends StatelessWidget {
     int correctQuestions = summaryData
         .where(
           (data) => data['correct_answer'] == data['user_answer'],
-        ).length;
+        )
+        .length;
 
-    int currentPoints = 0;    // The amount of points the user had before answering the questions.
+    int currentPoints =
+        0; // The amount of points the user had before answering the questions.
 
     // This is to get the int value of the Future<int> value from fetchUserPoints(). @ Avinash K
     Widget? getCurrentPoints() {
       return FutureBuilder<int>(
-        future: fetchUserPoints(), 
-        builder: (context, snapshot) {
-          currentPoints = snapshot.data ?? 0;
-          return const Text("");
-        }
-      );
+          future: fetchUserPoints(),
+          builder: (context, snapshot) {
+            currentPoints = snapshot.data ?? 0;
+            return const Text("");
+          });
     }
 
-    earnedPoints = correctQuestions * 10 * difficultyMultiplier;    // Simpler calculation for earnedPoints @ Avinash K
+    earnedPoints = correctQuestions *
+        10 *
+        difficultyMultiplier; // Simpler calculation for earnedPoints @ Avinash K
     /*
     for(var data in summaryData){
       if(data['user_answer'] == data['correct_answer'])
@@ -148,21 +157,23 @@ class CollectRewardsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text((summaryData[i]['user_answer'] ==
+                      Text(
+                          (summaryData[i]['user_answer'] ==
                                   summaryData[i]['correct_answer']
                               ? (10 * difficultyMultiplier).toString()
                               : '0'), //user ternary operator for conditions @Kelly O
-                            style: TextStyle(
-                              color: (summaryData[i]['user_answer'] ==
-                                  summaryData[i]['correct_answer']) ? Colors.green : Colors.red,
-                              fontWeight: FontWeight.bold,
-                            )
-                          )
+                          style: TextStyle(
+                            color: (summaryData[i]['user_answer'] ==
+                                    summaryData[i]['correct_answer'])
+                                ? Colors.green
+                                : Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ))
                     ]),
                 const SizedBox(width: 10)
               ],
             ),
-          getCurrentPoints()!,   // Set the value of currentPoints @Avinash K
+          getCurrentPoints()!, // Set the value of currentPoints @Avinash K
           const Divider(color: Colors.black),
           Text(
               "Score: $correctQuestions/${questions.length} = ${((correctQuestions / questions.length) * 100).toInt()}%"), // Score text with integer percentage
@@ -172,7 +183,8 @@ class CollectRewardsPage extends StatelessWidget {
             // onPressed: collectRewards,
             onPressed: () {
               int totalPoints = currentPoints + earnedPoints;
-              updateUserPoints(totalPoints);  // Update the user's points with the addition of earnedPoints in the database.
+              updateUserPoints(
+                  totalPoints); // Update the user's points with the addition of earnedPoints in the database.
 
               questions.shuffle();
               Navigator.of(context)
