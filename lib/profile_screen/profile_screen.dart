@@ -137,7 +137,7 @@ class ProfilePageState extends State<ProfilePage> {
                 isPswd: false,
               ),
               InfoBox(
-                  //add update password screen and logic
+                  //add update password scrFeen and logic
                   content: userPassword,
                   sectionTitle: "Password: ",
                   isPswd: true),
