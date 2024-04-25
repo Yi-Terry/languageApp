@@ -131,7 +131,8 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
                         'email': email,
                         'uid': uid,
                         'points': 0,
-                        'parentPassword':''
+                        'parentPassword':'',
+                        'password': password
 
                       });
 
