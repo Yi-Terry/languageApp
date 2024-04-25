@@ -6,11 +6,51 @@ import 'package:ndialog/ndialog.dart';
 
 final TextEditingController fullNameController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
-final TextEditingController passwordController = TextEditingController();
-final TextEditingController confirmController = TextEditingController();
+final TextEditingController pointsController = TextEditingController();
 
-void userCreationSheet(BuildContext context){
-  // User Creation Pop-up Sheet
+
+Future<User?> getUserByUid(String uid) async {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  
+  try {
+    // Perform sign-in to initialize Firebase Authentication
+    await auth.signInAnonymously();
+    
+    // Get the user by UID
+    User? user = auth.currentUser;
+    
+    return user;
+  } catch (e) {
+    print("Error getting user by UID: $e");
+    return null;
+  }
+}
+
+// // Function to update user's email by UID
+// void async function updateUserEmail(uid, newEmail) {
+//   try {
+//     // Get user record
+//     const userRecord = await admin.auth().getUser(uid);
+
+//     // Update user's email
+//     await admin.auth().updateUser(uid, {
+//       email: newEmail,
+//       emailVerified: false // You may need to verify the new email
+//     });
+
+//     print('yay');
+//   } catch (error) {
+//     print('Error updating email');
+//   }
+// }
+
+
+
+
+void editUserSheet(BuildContext context, id, fullName, email, points){
+  fullNameController.text = fullName;
+  emailController.text = email;
+  pointsController.text = points;
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: Colors.blue[100],
@@ -29,15 +69,13 @@ void userCreationSheet(BuildContext context){
           children: [
             const Center(
               child: Text(
-                "Create a New User",
+                "Edit User Info",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-
-            // Text Fields
             TextField(
               controller: fullNameController,
               decoration: const InputDecoration(
@@ -51,81 +89,68 @@ void userCreationSheet(BuildContext context){
               ),
             ),
             TextField(
-              controller: passwordController,
-              obscureText: true,
+              keyboardType: TextInputType.number,
+              controller: pointsController,
               decoration: const InputDecoration(
-                labelText: "Password",
+                labelText: "Points",
               ),
             ),
-            TextField(
-              controller: confirmController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Confirm Password",
-              ),
-            ),
-            
+
             const SizedBox(height: 20,),
             
-            // "Create" Button
             ElevatedButton(
               onPressed: () async {
                 var fullName = fullNameController.text.trim(); 
                 var email = emailController.text.trim();
-                var password = passwordController.text.trim();
-                var confirmPass = confirmController.text.trim();
+                var points = pointsController.text.trim();
 
-                if (fullName.isEmpty || email.isEmpty ||
-                    password.isEmpty || confirmPass.isEmpty) {
+                if (fullName.isEmpty ||
+                    email.isEmpty ||
+                    points.isEmpty) {
                   // show error toast
+
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
                 }
 
-                if (password.length < 6) { //checking for weak password
-                  // show error toast
-                  Fluttertoast.showToast(msg: 'Weak Password, at least 6 characters are required');
-                  return;
-                }
-
-                if (password != confirmPass) { //password doesnt match confirmed one
-                  // show error toast
-                  Fluttertoast.showToast(msg: 'Passwords do not match');
-                  return;
-                }
-
+                // request to firebase auth
                 ProgressDialog progressDialog = ProgressDialog(
                   context,
-                  title: const  Text('Creating User...'),
+                  title: const  Text('Updating Info...'),
                   message: const Text('Please wait'),
                 );
-                progressDialog.show();
 
+                progressDialog.show();
                 try {
 
-                  FirebaseAuth auth = FirebaseAuth.instance; //connecting to firebase
 
-                  //creating user with the data
-                  UserCredential userCredential =
-                      await auth.createUserWithEmailAndPassword(
-                          email: email, password: password);
+                  //connecting to firebase
+                  DatabaseReference userRef = FirebaseDatabase.instance.ref().child('Users');
 
                   //if the user credential does not equal nothing
-                  if (userCredential.user != null) {
+                  if (true) {
 
-                    // store user information in Realtime database
-                    DatabaseReference userRef = FirebaseDatabase.instance.ref().child( 'Users');
-
-                    String uid = userCredential.user!.uid; //getting the current user ID
-
-                    await userRef.child(uid).set({
+                    userRef.child(id).update({
                       'fullName': fullName,
                       'email': email,
-                      'uid': uid,
-                      'points': 0,
-                      'parentPassword':''
-
+                      'points': int.parse(points),
                     });
+
+                    User? user = await getUserByUid(id);
+
+                    if (user != null) {
+                      try {
+                        // Update the email for the user
+                        await user.updateEmail(email);
+                        print('Email updated successfully');
+                      } catch (e) {
+                        print('Error updating email: $e');
+                      }
+                    } else {
+                      print('User not found or error occurred while fetching user.');
+                    }
+
+
 
                     Fluttertoast.showToast(msg: 'Success');
 
@@ -140,21 +165,14 @@ void userCreationSheet(BuildContext context){
                   progressDialog.dismiss();
                   if (e.code == 'email-already-in-use') {
                     Fluttertoast.showToast(msg: 'Email is already in Use');
-                  } else if (e.code == 'weak-password') {
-                    Fluttertoast.showToast(msg: 'Password is weak');
                   }
                 } catch (e) {
                   progressDialog.dismiss();
                   Fluttertoast.showToast(msg: 'Something went wrong');
                 }
-
-                fullNameController.clear();
-                emailController.clear();
-                passwordController.clear();
-                confirmController.clear();
                 Navigator.pop(context);
               }, 
-              child: const Text("Create")),
+              child: const Text("Update")),
           ],
         ),
       );
