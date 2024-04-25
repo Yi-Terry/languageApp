@@ -39,8 +39,9 @@ class CollectRewardsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int difficultyMultiplier =
-        0; // Multiplied with the point total based on difficulty (easy = 1, medium = 2, hard = 3, premium = 5)
+    int difficultyMultiplier = 0; // Multiplied with the point total based on difficulty (easy = 1, medium = 2, hard = 3, premium = 5)
+    int earnedPoints = 0;
+
     // checking the type of question @Kelly O
     if (questions == eq) {
       difficultyMultiplier = 1;
@@ -57,8 +58,11 @@ class CollectRewardsPage extends StatelessWidget {
     int correctQuestions = summaryData
         .where(
           (data) => data['correct_answer'] == data['user_answer'],
-        )
-        .length;
+        ).length;
+    for(var data in summaryData){
+      if(data['user_answer'] == data['correct_answer'])
+        earnedPoints += 10 * difficultyMultiplier;
+      }
     return SizedBox(
       height: 500,
       child: Column(
@@ -111,6 +115,7 @@ class CollectRewardsPage extends StatelessWidget {
           const Divider(color: Colors.black),
           Text(
               "Score: $correctQuestions/${questions.length} = ${(correctQuestions / questions.length) * 100}"), // Score text
+          Text("Points Earned: $earnedPoints"),
           ElevatedButton(
             // Collect Rewards button
             // onPressed: collectRewards,
