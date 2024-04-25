@@ -1,7 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-final TextEditingController nameController = TextEditingController();
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ndialog/ndialog.dart';
+
+final TextEditingController fullNameController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
+final TextEditingController confirmController = TextEditingController();
 
 void userCreationSheet(BuildContext context){
   showModalBottomSheet(
@@ -30,7 +36,7 @@ void userCreationSheet(BuildContext context){
               ),
             ),
             TextField(
-              controller: nameController,
+              controller: fullNameController,
               decoration: const InputDecoration(
                 labelText: "Name",
               ),
@@ -43,18 +49,116 @@ void userCreationSheet(BuildContext context){
             ),
             TextField(
               controller: passwordController,
+              obscureText: true,
               decoration: const InputDecoration(
                 labelText: "Password",
               ),
             ),
+            TextField(
+              controller: confirmController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: "Confirm Password",
+              ),
+            ),
             const SizedBox(height: 20,),
+            
             ElevatedButton(
-              onPressed: (){
-                
+              onPressed: () async {
+                var fullName = fullNameController.text.trim(); 
+                  var email = emailController.text.trim();
+                  var password = passwordController.text.trim();
+                  var confirmPass = confirmController.text.trim();
 
-                nameController.clear();
+                  if (fullName.isEmpty ||
+                      email.isEmpty ||
+                      password.isEmpty ||
+                      confirmPass.isEmpty) {
+                    // show error toast
+
+                    Fluttertoast.showToast(msg: 'Please fill all fields');
+                    return;
+                  }
+
+                  if (password.length < 6) { //checking for weak password
+                    // show error toast
+                    Fluttertoast.showToast(
+                        msg:
+                            'Weak Password, at least 6 characters are required');
+
+                    return;
+                  }
+
+                  if (password != confirmPass) { //password doesnt match confirmed one
+                    // show error toast
+                    Fluttertoast.showToast(msg: 'Passwords do not match');
+
+                    return;
+                  }
+
+                  // request to firebase auth
+
+                  ProgressDialog progressDialog = ProgressDialog(
+                    context,
+                    title: const  Text('Signing Up'),
+                    message: const Text('Please wait'),
+                  );
+
+                  progressDialog.show();
+                  try {
+
+
+                    FirebaseAuth auth = FirebaseAuth.instance; //connecting to firebase
+
+                    //creating user withe the data
+                    UserCredential userCredential =
+                        await auth.createUserWithEmailAndPassword(
+                            email: email, password: password);
+
+                    //if the user credential does not equal nothing
+                    if (userCredential.user != null) {
+
+                      // store user information in Realtime database
+                      DatabaseReference userRef = FirebaseDatabase.instance.ref().child( 'Users');
+
+                      String uid = userCredential.user!.uid; //getting the current user ID
+                      int dt = DateTime.now().millisecondsSinceEpoch;
+
+                      await userRef.child(uid).set({
+                        'fullName': fullName,
+                        'email': email,
+                        'uid': uid,
+                        'points': 0,
+                        'parentPassword':''
+
+                      });
+
+                      Fluttertoast.showToast(msg: 'Success');
+
+                      //Navigator.of(context).pop();
+                    } else {
+                      Fluttertoast.showToast(msg: 'Failed');
+                    }
+
+                    progressDialog.dismiss();
+                  
+                  //exceptions if there are errors
+                  } on FirebaseAuthException catch (e) {
+                    progressDialog.dismiss();
+                    if (e.code == 'email-already-in-use') {
+                      Fluttertoast.showToast(msg: 'Email is already in Use');
+                    } else if (e.code == 'weak-password') {
+                      Fluttertoast.showToast(msg: 'Password is weak');
+                    }
+                  } catch (e) {
+                    progressDialog.dismiss();
+                    Fluttertoast.showToast(msg: 'Something went wrong');
+                  }
+
+                fullNameController.clear();
                 emailController.clear();
                 passwordController.clear();
+                confirmController.clear();
                 Navigator.pop(context);
               }, 
               child: const Text("Create")),
