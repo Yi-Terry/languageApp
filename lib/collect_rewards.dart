@@ -39,7 +39,8 @@ class CollectRewardsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int difficultyMultiplier = 0; // Multiplied with the point total based on difficulty (easy = 1, medium = 2, hard = 3, premium = 5)
+    int difficultyMultiplier =
+        0; // Multiplied with the point total based on difficulty (easy = 1, medium = 2, hard = 3, premium = 5)
     int earnedPoints = 0;
 
     // checking the type of question @Kelly O
@@ -58,11 +59,12 @@ class CollectRewardsPage extends StatelessWidget {
     int correctQuestions = summaryData
         .where(
           (data) => data['correct_answer'] == data['user_answer'],
-        ).length;
-    for(var data in summaryData){
-      if(data['user_answer'] == data['correct_answer'])
+        )
+        .length;
+    for (var data in summaryData) {
+      if (data['user_answer'] == data['correct_answer'])
         earnedPoints += 10 * difficultyMultiplier;
-      }
+    }
     return SizedBox(
       height: 500,
       child: Column(
@@ -98,16 +100,18 @@ class CollectRewardsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text((summaryData[i]['user_answer'] ==
+                      Text(
+                          (summaryData[i]['user_answer'] ==
                                   summaryData[i]['correct_answer']
                               ? (10 * difficultyMultiplier).toString()
                               : '0'), //user ternary operator for conditions @Kelly O
-                            style: TextStyle(
-                              color: (summaryData[i]['user_answer'] ==
-                                  summaryData[i]['correct_answer']) ? Colors.green : Colors.red,
-                              fontWeight: FontWeight.bold,
-                            )
-                          )
+                          style: TextStyle(
+                            color: (summaryData[i]['user_answer'] ==
+                                    summaryData[i]['correct_answer'])
+                                ? Colors.green
+                                : Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ))
                     ]),
                 const SizedBox(width: 10)
               ],
