@@ -64,10 +64,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
               progressDialog.show();
 
+              //tries to sign in with email and password 
               try{
-
+                
+                //connects to firebase
                 FirebaseAuth auth = FirebaseAuth.instance;
 
+                
                 UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
 
                 //if the user credential exists 

@@ -123,15 +123,15 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
                       // store user information in Realtime database
                       DatabaseReference userRef = FirebaseDatabase.instance.ref().child( 'Users');
 
-                      String uid = userCredential.user!.uid;
+                      String uid = userCredential.user!.uid; //getting the current user ID
                       int dt = DateTime.now().millisecondsSinceEpoch;
 
                       await userRef.child(uid).set({
                         'fullName': fullName,
                         'email': email,
                         'uid': uid,
-                        'dt': dt,
-                        'profileImage': ''
+                        'points': 0,
+                        'parentPassword':''
 
                       });
 
