@@ -151,6 +151,7 @@ Future<int> fetchUserPoints() async{ //getting user ponts
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.grey,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
