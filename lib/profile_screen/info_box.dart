@@ -26,7 +26,7 @@ class InfoBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.grey.shade300,
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -44,15 +44,18 @@ class InfoBox extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                isPswd ? '*' * content.length : content,
-              ),
+                  //isPswd ? '*' * content.length : content,
+                  content),
             ],
           ),
-          IconButton(
-            onPressed: () {
-              editContent('example');
-            },
-            icon: const Icon(Icons.edit),
+          Visibility(
+            visible: isPswd,
+            child: IconButton(
+              onPressed: () {
+                editContent('example');
+              },
+              icon: const Icon(Icons.edit),
+            ),
           ),
         ],
       ),
