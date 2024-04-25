@@ -176,6 +176,7 @@ Future<int> fetchUserPoints() async{ //getting user ponts
                     goToProfile();
                   },
                   icon: const Icon(Icons.account_circle),
+                  iconSize: 40,
                 ),
               ],
             ),
