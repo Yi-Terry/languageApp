@@ -2,6 +2,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:language_app/admin/user_creation.dart';
+import 'package:language_app/login_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 //import 'package:language_app/home_screen/my_home_page.dart';
 //import 'package:language_app/language_app.dart';
@@ -36,17 +37,38 @@ class AdminHomePage extends StatelessWidget {
             const SizedBox(height: 30,)
           ],),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.person, size: 30.0,),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute<ProfileScreen>(
-                  builder: (context) => const ProfileScreen(),
-                ),
-              );
-            },
-          )
+          //Log out Button
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) {
+                    return AlertDialog(
+                      title: Text('Log Out?',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: Text('No', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                              return LoginScreen();
+                            }));
+                          },
+                          child: Text('Yes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        ),
+                      ],
+                    );
+                  });
+              },
+            icon: const Icon(Icons.logout)),
+            SizedBox(width: 10,),
         ],
         automaticallyImplyLeading: false,
       ),
