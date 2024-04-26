@@ -23,7 +23,7 @@ class AdminHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Row(children: [
             Text(
-              'Administrator Page',
+              'Administrator Panel',
               style: TextStyle(
                 color: Colors.purple,
                 fontSize: 32.0,
@@ -134,6 +134,8 @@ class AdminHomePage extends StatelessWidget {
                                 return AlertDialog(
                                   title: Text('Delete User?',
                                     style: TextStyle(fontWeight: FontWeight.bold)),
+                                  content: Text("This action cannot be undone.",
+                                    style: TextStyle(fontSize: 16)),
                                   actions: [
                                     // 'No' option
                                     TextButton(
@@ -141,7 +143,7 @@ class AdminHomePage extends StatelessWidget {
                                         Navigator.of(ctx).pop();
                                         Navigator.pop(context);
                                       },
-                                      child: Text('No', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                                      child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                                     ),
                                     // 'Yes' option
                                     TextButton(
@@ -150,7 +152,7 @@ class AdminHomePage extends StatelessWidget {
                                         deleteUser(context, id);
                                         Navigator.pop(context);
                                       },
-                                      child: Text('Yes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                                      child: Text('Delete', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red)),
                                     ),
                                   ],
                                 );

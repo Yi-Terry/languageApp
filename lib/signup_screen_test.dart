@@ -21,7 +21,7 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: const Text('Sign Up', style: TextStyle(fontWeight: FontWeight.bold,)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -30,7 +30,7 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
             TextField(
               controller: fullNameController, //creates text field controller that will take in the info from user for name
               decoration: const InputDecoration(
-                hintText: 'FullName',
+                hintText: 'Full Name',
               ),
             ),
             const SizedBox(
@@ -63,7 +63,7 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             ElevatedButton( //when this button is pressed, it will save all the info from controller to these variables
                 onPressed: () async {
@@ -159,7 +159,7 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
                     Fluttertoast.showToast(msg: 'Something went wrong');
                   }
                 },
-                child: const Text('Sign Up')),
+                child: const Text('Sign Up', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
             const SizedBox(
               height: 10,
             ),

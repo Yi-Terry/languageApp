@@ -170,14 +170,14 @@ class ProfilePageState extends State<ProfilePage> {
                       context: context,
                       builder: (ctx) {
                         return AlertDialog(
-                          title: Text('Confirmation !!!'),
-                          content: Text('Are you sure to Log Out ? '),
+                          title: Text('Are you sure you want to Sign Out?',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(ctx).pop();
                               },
-                              child: Text('No'),
+                              child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                             ),
                             TextButton(
                               onPressed: () {
@@ -190,7 +190,7 @@ class ProfilePageState extends State<ProfilePage> {
                                   return LoginScreen();
                                 }));
                               },
-                              child: Text('Yes'),
+                              child: Text('Sign Out', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: const Color.fromARGB(255, 153, 10, 0))),
                             ),
                           ],
                         );
