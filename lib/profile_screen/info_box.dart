@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-
 class InfoBox extends StatelessWidget {
   final String content;
   final String sectionTitle;
   final bool isPswd;
-
 
   const InfoBox(
       {super.key,
@@ -14,10 +12,8 @@ class InfoBox extends StatelessWidget {
       required this.sectionTitle,
       required this.isPswd});
 
-
 //if content is password, hide text
 //if edit button pressed on pswd, pop up field with new/confirm pswd
-
 
   void editContent(String newContent) async {
     // String value = '';
@@ -25,7 +21,6 @@ class InfoBox extends StatelessWidget {
     //   content
     // )
   }
-
 
   @override
   Widget build(BuildContext context) {
