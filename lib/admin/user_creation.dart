@@ -123,7 +123,8 @@ void userCreationSheet(BuildContext context){
                       'email': email,
                       'uid': uid,
                       'points': 0,
-                      'parentPassword':''
+                      'parentPassword':'',
+                      'password': password
 
                     });
 

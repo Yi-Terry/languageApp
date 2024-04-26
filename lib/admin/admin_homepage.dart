@@ -1,13 +1,10 @@
 import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:language_app/admin/delete_user.dart';
 import 'package:language_app/admin/user_creation.dart';
 import 'package:language_app/admin/edit_user.dart';
 import 'package:language_app/login_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
-//import 'package:language_app/home_screen/my_home_page.dart';
-//import 'package:language_app/language_app.dart';
 
 DatabaseReference ref = FirebaseDatabase.instance.ref().child('Users');
 
@@ -138,16 +135,20 @@ class AdminHomePage extends StatelessWidget {
                                   title: Text('Delete User?',
                                     style: TextStyle(fontWeight: FontWeight.bold)),
                                   actions: [
+                                    // 'No' option
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
+                                        Navigator.pop(context);
                                       },
                                       child: Text('No', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                                     ),
+                                    // 'Yes' option
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
                                         deleteUser(context, id);
+                                        Navigator.pop(context);
                                       },
                                       child: Text('Yes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                                     ),
