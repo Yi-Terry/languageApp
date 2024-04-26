@@ -1,11 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:language_app/admin/admin_homepage.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:language_app/signup_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:language_app/signup_screen_test.dart';
-import 'package:language_app/admin/admin_login.dart';
+
+void checkForAdmin(User user, BuildContext context) {
+
+  String adminUid = 'otbGjUPr0efTfqvhQnnKR9Z9gbD2';
+
+  // Check if the signed-in user's UID matches the admin UID
+  if (user.uid == adminUid) {
+    // User is an admin
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+      return const AdminHomePage();
+    }));
+  } else {
+    // User is not an admin
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+      return const MyHomePage();
+    }));
+  }
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -73,21 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 //connects to firebase
                 FirebaseAuth auth = FirebaseAuth.instance;
 
-                
                 UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
 
                 //if the user credential exists 
                 if( userCredential.user != null ){
-
-
-                   progressDialog.dismiss();
-                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-
-                     return const MyHomePage();
-                   }));
+                  progressDialog.dismiss();
+                   checkForAdmin(userCredential.user!, context);
                 }
-
-
 
               }
 
@@ -131,19 +141,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 }, child: const Text('Register Now')),
               ],
             ),
-
-            SizedBox(height: 500,),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                    return const AdminLogin(); //sends the user to the signUpScreen page
-                  }));
-                }, child: const Text('Administrator Login')),
-              ],
-            )
           ],
         ),
       ),
