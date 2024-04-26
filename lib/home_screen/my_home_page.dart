@@ -10,6 +10,7 @@ import 'package:language_app/collect_rewards.dart';
 import 'package:language_app/levels/easy_level.dart';
 import 'package:language_app/levels/medium_level.dart';
 import 'package:language_app/levels/hard_level.dart';
+import 'package:language_app/levels/premium_level.dart';
 import 'package:language_app/profile_screen/profile_screen.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -69,11 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void chooseAnswerPrem(String answer) {
     selectedAnswer.add(answer);
-    // if (selectedAnswer.length == pq.length) {
-    //   setState(() {
-    //     activeScreen = CollectRewardsPage(questions: pq, chosenAnswers: selectedAnswer, collectRewards: getRewards);
-    //   });
-    // }
+    if (selectedAnswer.length == pq.length) {
+      setState(() {
+        activeScreen = CollectRewardsPage(questions: pq, chosenAnswers: selectedAnswer, collectRewards: getRewards);
+      });
+    }
   }
 
   void switchScreen() {
@@ -109,13 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void goToPremium() {
     //goes to premium question when unlocked @Kelly O
-    //activeScreen = PremiumLevel(onSelectAnswer: chooseAnswerPremium);
+    setState((){
+      activeScreen = PremiumLevel(onSelectAnswer: chooseAnswerPrem);
+    });
   }
 
   void goToProfile() {
     setState(() {
       // if (activeScreen is MyHomePage) {
-      //   print("swiching to protile");
+      //   print("swiching to profile");
       activeScreen = const ProfilePage();
       //   print("switched to protile");
       // } else if (activeScreen is ProfilePage) {
@@ -123,27 +126,32 @@ class _MyHomePageState extends State<MyHomePage> {
       // }
     });
   }
-  
+
   //Firebase stuff
-final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
-Future<User?> getCurrentUser() async{ //getting the current user
-  return _auth.currentUser;
-}
-
-Future<int> fetchUserPoints() async{ //getting user ponts
-  final User? currentUser = await getCurrentUser(); 
-  if(currentUser !=null){
-   final DatabaseReference ref = FirebaseDatabase.instance.ref(); //referencing database
-   final DatabaseEvent event = await ref.child('Users/${currentUser.uid}/points').once(); //going to the table to get this
-   final DataSnapshot snapshot = event.snapshot; //handling the data into a snapshot
-   if(snapshot.value != null){
-    return snapshot.value as int; //returning the value as an int
-   } 
+  Future<User?> getCurrentUser() async {
+    //getting the current user
+    return _auth.currentUser;
   }
-  return 0; //otherwise return 0
-}
+
+  Future<int> fetchUserPoints() async {
+    //getting user ponts
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/points')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +163,7 @@ Future<int> fetchUserPoints() async{ //getting user ponts
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Row(
+                Row(
                   children: [
                     const SizedBox(width: 5),
                     const ImageIcon(
@@ -320,22 +328,26 @@ Future<int> fetchUserPoints() async{ //getting user ponts
       ),
     );
   }
-   Widget _buildPointsWidget(){ //widget to get points
+
+  Widget _buildPointsWidget() {
+    //widget to get points
     return FutureBuilder<int>(
       future: fetchUserPoints(), //runs this program
-      builder: (context, snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){ //loading snapshot of dat
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          //loading snapshot of dat
           return const Text('Loading...');
-        }else if(snapshot.hasError){ //error handling
-         return Text('Error: ${snapshot.error}');
-        }else{
-         final int userPoints = snapshot.data ?? 0; //getting snapshot of user data
-         return Text('$userPoints', style: const TextStyle(fontSize: 24), //displaying it
-         );
+        } else if (snapshot.hasError) {
+          //error handling
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final int userPoints =
+              snapshot.data ?? 0; //getting snapshot of user data
+          return Text(
+            '$userPoints', style: const TextStyle(fontSize: 24), //displaying it
+          );
         }
       },
-      );
+    );
   }
 }
-
-

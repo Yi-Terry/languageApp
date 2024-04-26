@@ -98,10 +98,42 @@ const hardQuestions = [
 ];
 
 const premiumQuestions = [
+  QuizQuestion(
+    'Se supone que _______ mañana. ',
+    [
+      'lloverá', //correct
+      'llover', 
+      'lluvia'
+    ]
+    ),
+  QuizQuestion(
+    'Una parte ________ de la vida es el trabajo. ',
+    [
+      'importante', //correct
+      'importido',
+      'importando'
+    ]
+  ),
+  QuizQuestion(
+    'Siempre _______ mi cama por la mañana',
+    [
+      'hago', //correct
+      'hacer',
+      'haciendo'
+    ]
+  ),
+  QuizQuestion(
+    'El agua no se _____ pura.',
+    [
+      've', //correct
+      'mire',
+      'va'
+    ]
+  ),
 
 ];
 
 var eq = getShuffledQuestions(easyQuestions);
 var mq = getShuffledQuestions(mediumQuestions);
 var hq = getShuffledQuestions(hardQuestions);
-// var pq = getShuffledQuestions(premiumQuestions);
+var pq = getShuffledQuestions(premiumQuestions);
