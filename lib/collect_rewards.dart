@@ -122,7 +122,9 @@ class CollectRewardsPage extends StatelessWidget {
           earnedPoints += 10 * difficultyMultiplier;
     }
     */
-    return SizedBox(
+    return LayoutBuilder(builder:(ctx, constraints){
+      final width = constraints.maxWidth;
+      return SizedBox(
       height: 500,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,23 +137,64 @@ class CollectRewardsPage extends StatelessWidget {
           for (var i = 0; i < numTotalQuestions; i++)
             Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Question ${i + 1}: ${summaryData[i]['question']}',
-                      softWrap: true,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                if(width >=400)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children:[
+                          Text(
+                            'Question ${i+1}: ',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold
+                            )
+                          ),
+                        ]
                       ),
-                    ),
-                    Text(
-                      'Answered: "${summaryData[i]['user_answer']}"',
-                      softWrap: true,
-                    ),
-                  ],
-                ),
+                      Row(
+                        children:[
+                          Text(
+                            '${summaryData[i]['question']}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold
+                            )
+                          ),
+                        ]
+                      ),
+                      Text(
+                        'Answered: "${summaryData[i]['user_answer']}"',
+                        softWrap: true,
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Question ${i + 1}: ${summaryData[i]['question']}',
+                        softWrap: true,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Answered: "${summaryData[i]['user_answer']}"',
+                        softWrap: true,
+                        style: TextStyle(
+                          fontSize: 12,
+                        )
+                      ),
+                    ],
+                  ),
+
+
                 const Spacer(),
                 Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -198,5 +241,6 @@ class CollectRewardsPage extends StatelessWidget {
         ],
       ),
     );
+    });
   }
 }
