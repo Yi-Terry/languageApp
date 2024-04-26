@@ -6,7 +6,6 @@ import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:language_app/signup_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:language_app/signup_screen_test.dart';
-import 'package:language_app/admin/admin_login.dart';
 
 void checkForAdmin(User user, BuildContext context) {
 
@@ -142,24 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 }, child: const Text('Register Now')),
               ],
             ),
-
-            SizedBox(height: 500,),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                    return const AdminLogin(); //sends the user to the signUpScreen page
-                  }));
-                }, child: const Text('Administrator Login')),
-              ],
-            )
           ],
         ),
       ),
     );
   }
-
-  
 }
