@@ -6,8 +6,6 @@ import 'package:language_app/admin/user_creation.dart';
 import 'package:language_app/admin/edit_user.dart';
 import 'package:language_app/login_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
-//import 'package:language_app/home_screen/my_home_page.dart';
-//import 'package:language_app/language_app.dart';
 
 DatabaseReference ref = FirebaseDatabase.instance.ref().child('Users');
 

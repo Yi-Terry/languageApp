@@ -8,45 +8,6 @@ final TextEditingController fullNameController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController pointsController = TextEditingController();
 
-
-Future<User?> getUserByUid(String uid) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  
-  try {
-    // Perform sign-in to initialize Firebase Authentication
-    await auth.signInAnonymously();
-    
-    // Get the user by UID
-    User? user = auth.currentUser;
-    
-    return user;
-  } catch (e) {
-    print("Error getting user by UID: $e");
-    return null;
-  }
-}
-
-// // Function to update user's email by UID
-// void async function updateUserEmail(uid, newEmail) {
-//   try {
-//     // Get user record
-//     const userRecord = await admin.auth().getUser(uid);
-
-//     // Update user's email
-//     await admin.auth().updateUser(uid, {
-//       email: newEmail,
-//       emailVerified: false // You may need to verify the new email
-//     });
-
-//     print('yay');
-//   } catch (error) {
-//     print('Error updating email');
-//   }
-// }
-
-
-
-
 void editUserSheet(BuildContext context, id, fullName, email, points){
   fullNameController.text = fullName;
   emailController.text = email;
@@ -135,22 +96,6 @@ void editUserSheet(BuildContext context, id, fullName, email, points){
                       'email': email,
                       'points': int.parse(points),
                     });
-
-                    User? user = await getUserByUid(id);
-
-                    if (user != null) {
-                      try {
-                        // Update the email for the user
-                        await user.updateEmail(email);
-                        print('Email updated successfully');
-                      } catch (e) {
-                        print('Error updating email: $e');
-                      }
-                    } else {
-                      print('User not found or error occurred while fetching user.');
-                    }
-
-
 
                     Fluttertoast.showToast(msg: 'Success');
 
