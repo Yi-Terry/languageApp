@@ -290,39 +290,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Spacer(), //UNDER GOLD @Chris Z
 
                   // place holder for logout function
-                  IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (ctx) {
-                              return AlertDialog(
-                                title: Text('Confirmation !!!'),
-                                content: Text('Are you sure to Log Out ? '),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(ctx).pop();
-                                    },
-                                    child: Text('No'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(ctx).pop();
-
-                                      FirebaseAuth.instance.signOut();
-
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(builder: (context) {
-                                        return LoginScreen();
-                                      }));
-                                    },
-                                    child: Text('Yes'),
-                                  ),
-                                ],
-                              );
-                            });
-                      },
-                      icon: const Icon(Icons.logout)),
                 ],
               ),
         ),

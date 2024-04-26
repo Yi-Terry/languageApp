@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
+import 'package:language_app/login_screen.dart';
 import 'package:language_app/profile_screen/info_box.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -150,6 +151,40 @@ class ProfilePageState extends State<ProfilePage> {
                     }));
                   },
                   child: const Text('Return to home')),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return AlertDialog(
+                          title: Text('Confirmation !!!'),
+                          content: Text('Are you sure to Log Out ? '),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(ctx).pop();
+                              },
+                              child: Text('No'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(ctx).pop();
+
+                                FirebaseAuth.instance.signOut();
+
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) {
+                                  return LoginScreen();
+                                }));
+                              },
+                              child: Text('Yes'),
+                            ),
+                          ],
+                        );
+                      });
+                },
+                child: const Text('Sign Out'),
+              ),
             ],
           );
         }
