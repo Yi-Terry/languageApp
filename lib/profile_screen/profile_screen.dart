@@ -5,6 +5,7 @@ import 'package:language_app/login_screen.dart';
 import 'package:language_app/profile_screen/info_box.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:language_app/profile_screen/parent_view_login_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -31,7 +32,7 @@ class ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  //Firebase stuff
+  //Firebase connection
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<User?> getCurrentUser() async {
@@ -142,6 +143,18 @@ class ProfilePageState extends State<ProfilePage> {
                   content: userPassword,
                   sectionTitle: "Password: ",
                   isPswd: true),
+              Padding(
+                padding: EdgeInsets.only(bottom: 30),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    // sends the user to the parent view page @Marcus F
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const ParentViewLogin();
+                    }));
+                  },
+                  child: const Text('Sign in to parent view')),
               ElevatedButton(
                   onPressed: () {
                     // sends the user to the home page @Terry Y

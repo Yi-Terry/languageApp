@@ -171,7 +171,6 @@ class CollectRewardsPage extends StatelessWidget {
                           ))
                     ]),
                 const SizedBox(width: 10)
-                
               ],
             ),
           getCurrentPoints()!, // Set the value of currentPoints @Avinash K
