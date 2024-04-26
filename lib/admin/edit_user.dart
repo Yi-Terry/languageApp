@@ -108,6 +108,7 @@ void editUserSheet(BuildContext context, id, fullName, email, points){
                   Fluttertoast.showToast(msg: 'Something went wrong');
                 }
                 Navigator.pop(context);
+                Navigator.pop(context);
               }, 
               child: const Text("Update")),
           ],

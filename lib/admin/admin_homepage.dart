@@ -135,16 +135,20 @@ class AdminHomePage extends StatelessWidget {
                                   title: Text('Delete User?',
                                     style: TextStyle(fontWeight: FontWeight.bold)),
                                   actions: [
+                                    // 'No' option
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
+                                        Navigator.pop(context);
                                       },
                                       child: Text('No', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                                     ),
+                                    // 'Yes' option
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
                                         deleteUser(context, id);
+                                        Navigator.pop(context);
                                       },
                                       child: Text('Yes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                                     ),
