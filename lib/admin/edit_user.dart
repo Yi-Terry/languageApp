@@ -84,24 +84,16 @@ void editUserSheet(BuildContext context, id, fullName, email, points){
                 progressDialog.show();
                 try {
 
-
                   //connecting to firebase
                   DatabaseReference userRef = FirebaseDatabase.instance.ref().child('Users');
 
-                  //if the user credential does not equal nothing
-                  if (true) {
+                  userRef.child(id).update({
+                    'fullName': fullName,
+                    'email': email,
+                    'points': int.parse(points),
+                  });
 
-                    userRef.child(id).update({
-                      'fullName': fullName,
-                      'email': email,
-                      'points': int.parse(points),
-                    });
-
-                    Fluttertoast.showToast(msg: 'Success');
-
-                  } else {
-                    Fluttertoast.showToast(msg: 'Failed');
-                  }
+                  Fluttertoast.showToast(msg: 'Success');
 
                   progressDialog.dismiss();
                 

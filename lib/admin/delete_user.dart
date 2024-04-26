@@ -19,16 +19,9 @@ void deleteUser(BuildContext context, id){
     //connecting to firebase
     DatabaseReference userRef = FirebaseDatabase.instance.ref().child('Users');
 
-    //if the user credential does not equal nothing
-    if (true) {
+    userRef.child(id).remove();
 
-      userRef.child(id).remove();
-
-      Fluttertoast.showToast(msg: 'Success');
-
-    } else {
-      Fluttertoast.showToast(msg: 'Failed');
-    }
+    Fluttertoast.showToast(msg: 'Success');
 
     progressDialog.dismiss();
   

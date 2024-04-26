@@ -1,5 +1,4 @@
 import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:language_app/admin/delete_user.dart';
 import 'package:language_app/admin/user_creation.dart';
