@@ -130,10 +130,43 @@ const premiumQuestions = [
       'va'
     ]
   ),
-
+  // Audio questions @ Avinash K
+  QuizQuestion (
+    "Translate the following sentence:",       // AudioQuestion1 - No spaces after the colon
+    [
+      "Where is the train station?", // correct
+      "When is the first train arriving?",
+      "When is the last train arriving?"
+    ]
+  ),
+  QuizQuestion ( 
+    "Translate the following sentence: ",       // AudioQuestion2 - 1 space after the colon
+    [
+      "I have three children and six nephews.",  // correct
+      "I have three daughters and six nieces.",
+      "I have three sons and seven nephews."
+    ]
+  ),
+  QuizQuestion (
+    "Translate the following sentence:  ",       // AudioQuestion3 - 2 spaces
+    [
+      "How was your mother yesterday?",  // correct
+      "Where will your mother be tomorrow?",
+      "When will your mother arrive?"
+    ]
+  ),
+  QuizQuestion (
+    "Translate the following sentence:   ",     // AudioQuestion4 - 3 spaces
+    [
+      "When are the onions going to be on sale?",  // correct
+      "When are the avocados going to be on sale?",
+      "When are the papayas going to be on sale?" 
+    ]
+  ),
 ];
 
 var eq = getShuffledQuestions(easyQuestions);
 var mq = getShuffledQuestions(mediumQuestions);
 var hq = getShuffledQuestions(hardQuestions);
 var pq = getShuffledQuestions(premiumQuestions);
+

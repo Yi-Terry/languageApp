@@ -144,7 +144,7 @@ class ChangePasswordState extends State<ChangePassword> {
               child: Text('Submit', style: TextStyle(fontSize: 16))),
           ElevatedButton(
             onPressed: () {
-              // Navigate to home page
+              // Navigate to profile page
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return const ProfilePage();
               }));

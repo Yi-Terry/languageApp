@@ -30,7 +30,8 @@ class CollectRewardsPage extends StatelessWidget {
     //mapping of information
     final List<Map<String, Object>> summary = [];
 
-    for (var i = 0; i < chosenAnswers.length; i++) {
+    for (var i = 0; i < 3; i++) {
+      // Changed condition from "chosenAnswers.length" to "3" since every level has 3 questions. @ Avinash K
       summary.add({
         'question_index': i,
         'question': questions[i].text,
@@ -103,7 +104,7 @@ class CollectRewardsPage extends StatelessWidget {
     }
     final summaryData =
         getSummaryData(); // gets question data and maps it @Kelly O
-    final numTotalQuestions = questions.length;
+    const numTotalQuestions = 3; // 3 questions per level. @ Avinash K
     int correctQuestions = summaryData
         .where(
           (data) => data['correct_answer'] == data['user_answer'],
@@ -217,7 +218,7 @@ class CollectRewardsPage extends StatelessWidget {
             getCurrentPoints()!, // Set the value of currentPoints @Avinash K
             const Divider(color: Colors.black),
             Text(
-                "Score: $correctQuestions/${questions.length} = ${((correctQuestions / questions.length) * 100).toInt()}%"), // Score text with integer percentage
+                "Score: $correctQuestions/$numTotalQuestions = ${((correctQuestions / numTotalQuestions) * 100).toInt()}%"), // Score text with integer percentage
             Text("Points Earned: $earnedPoints"),
             ElevatedButton(
               // Collect Rewards button

@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void chooseAnswerPrem(String answer) {
     selectedAnswer.add(answer);
-    if (selectedAnswer.length == pq.length) {
+    if (selectedAnswer.length == 3) {
       setState(() {
         activeScreen = CollectRewardsPage(questions: pq, chosenAnswers: selectedAnswer, collectRewards: getRewards);
       });
