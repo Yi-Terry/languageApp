@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:language_app/widgets/questions.dart';
 import 'package:language_app/widgets/answer_button.dart';
+import "package:audioplayers/audioplayers.dart";
 
 // brings to easy level page @Kelly O
 
@@ -33,7 +34,6 @@ class _PremiumLevelState extends State<PremiumLevel>{
   @override
   Widget build(context){
     final currentQuestion = pq[currentQuestionIndex];
-
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -45,6 +45,15 @@ class _PremiumLevelState extends State<PremiumLevel>{
             ),
             textAlign: TextAlign.center,
           ),
+          // Check if the question is an audio question, and if it is, choose the correct audio to play. @ Avinash K
+          if (currentQuestion.text == "Translate the following sentence:")    // No space after colon -> AudioQuestion1
+            createAudioButton("audios/AudioQuestion1.mp3"),
+          if (currentQuestion.text == "Translate the following sentence: ")   // 1 space after colon -> AudioQuestion2
+            createAudioButton("audios/AudioQuestion2.mp3"),
+          if (currentQuestion.text == "Translate the following sentence:  ")  // 2 spaces after colon -> AudioQuestion3
+            createAudioButton("audios/AudioQuestion3.mp3"),
+          if (currentQuestion.text == "Translate the following sentence:   ") // 3 spaces after colon -> AudioQuestion4
+            createAudioButton("audios/AudioQuestion4.mp3"),
           const SizedBox(height: 40),
           ...currentQuestion.getShuffledAnswers().map((item){
             return AnswerButton(
@@ -58,4 +67,17 @@ class _PremiumLevelState extends State<PremiumLevel>{
       ),
     );
   }
+
+  // Creates an audio button for audio questions using the specified name of the corresponding audio file.
+  IconButton createAudioButton(String fileName) {
+    return IconButton(
+              onPressed: () {
+                final player = AudioPlayer();
+                player.play(AssetSource(fileName));
+              },
+              icon: Icon(Icons.play_arrow_rounded, size: 20),
+              alignment: AlignmentDirectional.center,
+            );
+  }
 }
+
