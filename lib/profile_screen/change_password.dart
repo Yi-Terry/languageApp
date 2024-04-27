@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:language_app/profile_screen/parent_view_login_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:language_app/profile_screen/profile_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ChangeParentPassword extends StatefulWidget {
-  const ChangeParentPassword({Key? key}) : super(key: key);
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
-  ChangeParentPasswordState createState() => ChangeParentPasswordState();
+  ChangePasswordState createState() => ChangePasswordState();
 }
 
-class ChangeParentPasswordState extends State<ChangeParentPassword> {
-  var parentPasswordController = TextEditingController();
-  var parentConfirmController = TextEditingController();
+class ChangePasswordState extends State<ChangePassword> {
+  var passwordController = TextEditingController();
+  var confirmController = TextEditingController();
 
 //Firebase connection
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,14 +41,14 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
     return "Could not fetch value: uid"; //otherwise return error
   }
 
-  //retrieve current user's parent password
-  Future<String> fetchUserParentPassword() async {
+  //retrieve current user's password
+  Future<String> fetchUserPassword() async {
     final User? currentUser = await getCurrentUser();
     if (currentUser != null) {
       final DatabaseReference ref =
           FirebaseDatabase.instance.ref(); //referencing database
       final DatabaseEvent event = await ref
-          .child('Users/${currentUser.uid}/parentPassword')
+          .child('Users/${currentUser.uid}/password')
           .once(); //going to the table to get this
       final DataSnapshot snapshot = event.snapshot;
       if (snapshot.value != null) {
@@ -65,25 +65,25 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-            "Create Or Change Parent Password",
+            "Change Password",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         body: ListView(padding: EdgeInsets.all(8), children: [
           TextField(
             controller:
-                parentPasswordController, //creates text field controller that will take in the info from user for password
+                passwordController, //creates text field controller that will take in the info from user for password
             obscureText: true,
             decoration: const InputDecoration(
-              hintText: 'Parent Password',
+              hintText: 'Password',
             ),
           ),
           TextField(
             controller:
-                parentConfirmController, //creates text field controller that will take in the info from user for confirming password
+                confirmController, //creates text field controller that will take in the info from user for confirming password
             obscureText: true,
             decoration: const InputDecoration(
-              hintText: 'Confirm Parent Password',
+              hintText: 'Confirm Password',
             ),
           ),
           const SizedBox(
@@ -91,22 +91,22 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
           ),
           ElevatedButton(
               onPressed: () async {
-                var parentPassword = parentPasswordController.text.trim();
-                var confirmParentPassword = parentConfirmController.text.trim();
-                String curentParentPassword = await fetchUserParentPassword();
+                var password = passwordController.text.trim();
+                var confirmPassword = confirmController.text.trim();
+                String currentPassword = await fetchUserPassword();
 
-                if (parentPassword.isEmpty || confirmParentPassword.isEmpty) {
+                if (password.isEmpty || confirmPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
-                } else if (parentPassword.length < 6) {
+                } else if (password.length < 6) {
                   Fluttertoast.showToast(
                       msg: 'Weak Password, at least 6 characters are required');
                   return;
-                } else if (parentPassword != confirmParentPassword) {
+                } else if (password != confirmPassword) {
                   Fluttertoast.showToast(msg: 'Passwords do not match');
                   return;
-                } else if (curentParentPassword.isNotEmpty &&
-                    parentPassword == curentParentPassword) {
+                } else if (currentPassword.isNotEmpty &&
+                    password == currentPassword) {
                   Fluttertoast.showToast(
                       msg:
                           'Password cannot be the same as the previous password');
@@ -125,9 +125,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                     DatabaseReference userRef =
                         FirebaseDatabase.instance.ref().child('Users');
 
-                    await userRef
-                        .child(uid)
-                        .update({'parentPassword': parentPassword});
+                    await userRef.child(uid).update({'password': password});
                     Fluttertoast.showToast(msg: 'Success');
                     Navigator.of(context).pop();
 
@@ -146,13 +144,13 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
               child: Text('Submit', style: TextStyle(fontSize: 16))),
           ElevatedButton(
             onPressed: () {
-              // Navigate to home page
+              // Navigate to profile page
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return const ParentViewLogin();
+                return const ProfilePage();
               }));
             },
             child: const Text(
-              'Return to Login',
+              'Return to Profile',
               style: TextStyle(fontSize: 16),
             ),
           )
