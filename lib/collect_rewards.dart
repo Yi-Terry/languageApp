@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:language_app/profile_screen/current_session_stats.dart';
+import 'package:language_app/profile_screen/parent_view.dart';
 import 'package:language_app/widgets/questions.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -15,6 +17,14 @@ class CollectRewardsPage extends StatelessWidget {
       questions; // could be easy, medium, hard, premium questions
   final List<String> chosenAnswers;
   final void Function() collectRewards;
+  static int? sessionPoints;
+
+  static Map<String, int> statsMap = {
+    'easy': 0,
+    'medium': 0,
+    'hard': 0,
+    'premium': 0
+  };
 
   List<Map<String, Object>> getSummaryData() {
     //mapping of information
@@ -122,125 +132,113 @@ class CollectRewardsPage extends StatelessWidget {
           earnedPoints += 10 * difficultyMultiplier;
     }
     */
-    return LayoutBuilder(builder:(ctx, constraints){
+
+    //information to sent to parent view
+    sessionPoints = earnedPoints;
+
+    return LayoutBuilder(builder: (ctx, constraints) {
       final width = constraints.maxWidth;
       return SizedBox(
-      height: 500,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Text('Level Completed!',
-              style: TextStyle(
-                fontSize: 30,
-              )),
-          const Divider(color: Colors.black),
-          for (var i = 0; i < numTotalQuestions; i++)
-            Row(
-              children: [
-                if(width >=400)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children:[
-                          Text(
-                            'Question ${i+1}: ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold
-                            )
-                          ),
-                        ]
-                      ),
-                      Row(
-                        children:[
-                          Text(
-                            '${summaryData[i]['question']}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold
-                            )
-                          ),
-                        ]
-                      ),
-                      Text(
-                        'Answered: "${summaryData[i]['user_answer']}"',
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  )
-                else
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Question ${i + 1}: ${summaryData[i]['question']}',
-                        softWrap: true,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Answered: "${summaryData[i]['user_answer']}"',
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 12,
-                        )
-                      ),
-                    ],
-                  ),
-
-
-                const Spacer(),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                          (summaryData[i]['user_answer'] ==
-                                  summaryData[i]['correct_answer']
-                              ? (10 * difficultyMultiplier).toString()
-                              : '0'), //user ternary operator for conditions @Kelly O
+        height: 500,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text('Level Completed!',
+                style: TextStyle(
+                  fontSize: 30,
+                )),
+            const Divider(color: Colors.black),
+            for (var i = 0; i < numTotalQuestions; i++)
+              Row(
+                children: [
+                  if (width >= 400)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                          Text('Question ${i + 1}: ',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold)),
+                        ]),
+                        Row(children: [
+                          Text('${summaryData[i]['question']}',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold)),
+                        ]),
+                        Text(
+                          'Answered: "${summaryData[i]['user_answer']}"',
+                          softWrap: true,
                           style: TextStyle(
-                            color: (summaryData[i]['user_answer'] ==
-                                    summaryData[i]['correct_answer'])
-                                ? Colors.green
-                                : Colors.red,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Question ${i + 1}: ${summaryData[i]['question']}',
+                          softWrap: true,
+                          style: const TextStyle(
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
-                          ))
-                    ]),
-                const SizedBox(width: 10)
-              ],
-            ),
-          getCurrentPoints()!, // Set the value of currentPoints @Avinash K
-          const Divider(color: Colors.black),
-          Text(
-              "Score: $correctQuestions/${questions.length} = ${((correctQuestions / questions.length) * 100).toInt()}%"), // Score text with integer percentage
-          Text("Points Earned: $earnedPoints"),
-          ElevatedButton(
-            // Collect Rewards button
-            // onPressed: collectRewards,
-            onPressed: () {
-              int totalPoints = currentPoints + earnedPoints;
-              updateUserPoints(
-                  totalPoints); // Update the user's points with the addition of earnedPoints in the database.
+                          ),
+                        ),
+                        Text('Answered: "${summaryData[i]['user_answer']}"',
+                            softWrap: true,
+                            style: TextStyle(
+                              fontSize: 12,
+                            )),
+                      ],
+                    ),
+                  const Spacer(),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                            (summaryData[i]['user_answer'] ==
+                                    summaryData[i]['correct_answer']
+                                ? (10 * difficultyMultiplier).toString()
+                                : '0'), //user ternary operator for conditions @Kelly O
+                            style: TextStyle(
+                              color: (summaryData[i]['user_answer'] ==
+                                      summaryData[i]['correct_answer'])
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ))
+                      ]),
+                  const SizedBox(width: 10)
+                ],
+              ),
+            getCurrentPoints()!, // Set the value of currentPoints @Avinash K
+            const Divider(color: Colors.black),
+            Text(
+                "Score: $correctQuestions/${questions.length} = ${((correctQuestions / questions.length) * 100).toInt()}%"), // Score text with integer percentage
+            Text("Points Earned: $earnedPoints"),
+            ElevatedButton(
+              // Collect Rewards button
+              // onPressed: collectRewards,
+              onPressed: () {
+                int totalPoints = currentPoints + earnedPoints;
+                updateUserPoints(
+                    totalPoints); // Update the user's points with the addition of earnedPoints in the database.
 
-              questions.shuffle();
-              Navigator.of(context)
-                  .pushReplacement(MaterialPageRoute(builder: (context) {
-                return const MyHomePage();
-              }));
-              emptyPage();
-            },
-            child: const Text("Collect Rewards"),
-          ),
-        ],
-      ),
-    );
+                questions.shuffle();
+                Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(builder: (context) {
+                  return const MyHomePage();
+                }));
+                emptyPage();
+              },
+              child: const Text("Collect Rewards"),
+            ),
+          ],
+        ),
+      );
     });
   }
 }

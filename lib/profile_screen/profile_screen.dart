@@ -88,7 +88,18 @@ class ProfilePageState extends State<ProfilePage> {
         return snapshot.value as String; //return value as string
       }
     }
-    return "Could not fetch value: fullName"; //otherwise return error
+    return "Could not fetch value: password"; //otherwise return error
+  }
+
+  String? userPassword;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch password on initial build
+    fetchUserPassword().then((value) => setState(() {
+          userPassword = value;
+        }));
   }
 
   @override
@@ -115,6 +126,7 @@ class ProfilePageState extends State<ProfilePage> {
           final String userEmail = data[0];
           final String userName = data[1];
           final String userPassword = data[2];
+          // String password = await fetchUserPassword();
           return ListView(
             children: [
               const SizedBox(height: 40),
@@ -127,9 +139,10 @@ class ProfilePageState extends State<ProfilePage> {
                 textAlign: TextAlign.center,
               ),
               const Padding(
-                padding: EdgeInsets.only(left: 35),
+                padding: EdgeInsets.only(left: 35, top: 20),
                 child: Text(
                   "Account Details:",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ),
               InfoBox(
@@ -171,13 +184,17 @@ class ProfilePageState extends State<ProfilePage> {
                       builder: (ctx) {
                         return AlertDialog(
                           title: Text('Are you sure you want to Sign Out?',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(ctx).pop();
                               },
-                              child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              child: Text('Cancel',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18)),
                             ),
                             TextButton(
                               onPressed: () {
@@ -190,7 +207,12 @@ class ProfilePageState extends State<ProfilePage> {
                                   return LoginScreen();
                                 }));
                               },
-                              child: Text('Sign Out', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: const Color.fromARGB(255, 153, 10, 0))),
+                              child: Text('Sign Out',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: const Color.fromARGB(
+                                          255, 153, 10, 0))),
                             ),
                           ],
                         );

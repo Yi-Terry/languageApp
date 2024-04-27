@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:language_app/profile_screen/change_password.dart';
 
 class InfoBox extends StatelessWidget {
   final String content;
@@ -14,13 +15,6 @@ class InfoBox extends StatelessWidget {
 
 //if content is password, hide text
 //if edit button pressed on pswd, pop up field with new/confirm pswd
-
-  void editContent(String newContent) async {
-    // String value = '';
-    // await showPrompt(
-    //   content
-    // )
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +46,10 @@ class InfoBox extends StatelessWidget {
             visible: isPswd,
             child: IconButton(
               onPressed: () {
-                editContent('example');
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return const ChangePassword();
+                }));
               },
               icon: const Icon(Icons.edit),
             ),

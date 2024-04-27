@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:language_app/profile_screen/change_parent_view_password.dart';
@@ -91,6 +90,10 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                               Fluttertoast.showToast(
                                   msg: "Please enter a password");
                               return;
+                            } else if (parentPasswordInput !=
+                                userParentPassword) {
+                              Fluttertoast.showToast(
+                                  msg: "Incorrect Password. Please try again.");
                             }
 
                             // ProgressDialog progressDialog = ProgressDialog(
@@ -123,7 +126,7 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Navigate to home page
+                          // Navigate to profile page
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
                             return const ProfilePage();
