@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:language_app/profile_screen/current_session_stats.dart';
-import 'package:language_app/profile_screen/parent_view.dart';
 import 'package:language_app/widgets/questions.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -17,14 +15,6 @@ class CollectRewardsPage extends StatelessWidget {
       questions; // could be easy, medium, hard, premium questions
   final List<String> chosenAnswers;
   final void Function() collectRewards;
-  static int? sessionPoints;
-
-  static Map<String, int> statsMap = {
-    'easy': 0,
-    'medium': 0,
-    'hard': 0,
-    'premium': 0
-  };
 
   List<Map<String, Object>> getSummaryData() {
     //mapping of information
@@ -133,10 +123,6 @@ class CollectRewardsPage extends StatelessWidget {
           earnedPoints += 10 * difficultyMultiplier;
     }
     */
-
-    //information to sent to parent view
-    sessionPoints = earnedPoints;
-
     return LayoutBuilder(builder: (ctx, constraints) {
       final width = constraints.maxWidth;
       return SizedBox(
