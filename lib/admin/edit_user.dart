@@ -1,18 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ndialog/ndialog.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 final TextEditingController fullNameController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController pointsController = TextEditingController();
+final TextEditingController rightQController = TextEditingController();
+final TextEditingController totalQController = TextEditingController();
 bool isPremium = false;
 
-void editUserSheet(BuildContext context, id, fullName, email, points, premium){
+void editUserSheet(BuildContext context, id, fullName, email, points, premium, rightQuestions, totalQuestions){
   fullNameController.text = fullName;
   emailController.text = email;
   pointsController.text = points;
+  rightQController.text = rightQuestions;
+  totalQController.text = totalQuestions;
   isPremium = premium.toLowerCase() == 'true';
 
   showModalBottomSheet(
@@ -64,6 +71,28 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium){
 
             Row(
               children: [
+                Text("Question Stats:  ", 
+                  style: TextStyle(
+                  fontSize: 18.0,), 
+                ),
+                ScrollWheel(
+                  numQuestions: int.parse(rightQuestions),
+                ),
+                Text("/", 
+                  style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold), 
+                ),
+                ScrollWheel(
+                  numQuestions: int.parse(totalQuestions),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20,),
+
+            Row(
+              children: [
                 Text("Premium Access:  ", 
                   style: TextStyle(
                   fontSize: 18.0,), 
@@ -80,6 +109,7 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium){
                 var fullName = fullNameController.text.trim(); 
                 var email = emailController.text.trim();
                 var points = pointsController.text.trim();
+                //var wrongQuestions = totalQuestions - rightQuestions;
 
                 if (fullName.isEmpty ||
                     email.isEmpty ||
@@ -108,6 +138,9 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium){
                     'email': email,
                     'points': int.parse(points),
                     'premAccess': isPremium,
+                    // 'questionsCorrect': int.parse(rightQuestions),
+                    // 'questionsCompleted': int.parse(totalQuestions),
+                    // 'questionsWrong': int.parse(wrongQuestions),
                   });
 
                   Fluttertoast.showToast(msg: 'Success');
@@ -152,6 +185,45 @@ class _ToggleSliderState extends State<ToggleSlider> {
       },
       activeTrackColor: Colors.lightGreenAccent,
       activeColor: Colors.green,
+    );
+  }
+}
+
+class ScrollWheel extends StatefulWidget {
+  final int numQuestions; // Defines a parameter for the scroll wheel
+
+  ScrollWheel({Key? key, required this.numQuestions}) : super(key: key);
+
+  @override
+  ScrollWheelState createState() => ScrollWheelState();
+}
+
+class ScrollWheelState extends State<ScrollWheel> {
+  late int numQuestions; // Declare as late so it can be assigned in initState
+
+  @override
+  void initState() {
+    super.initState();
+    numQuestions = widget.numQuestions;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        NumberPicker(
+          value: numQuestions,
+          itemHeight: 30,
+          minValue: 0,
+          maxValue: 1000,
+          onChanged: (value) => setState(() => numQuestions = value),
+          selectedTextStyle: TextStyle(
+            color: Colors.purple, 
+            fontSize: 24, 
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ],
     );
   }
 }

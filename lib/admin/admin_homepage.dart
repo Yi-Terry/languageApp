@@ -143,7 +143,7 @@ class AdminHomePage extends StatelessWidget {
                       PopupMenuItem(
                         value: 1,
                         child: ListTile(
-                          onTap: () => editUserSheet(context, id, fullName, email, points, premium),
+                          onTap: () => editUserSheet(context, id, fullName, email, points, premium, rightQuestions, totalQuestions),
                           leading: const Icon(Icons.edit, color: Color.fromARGB(255, 57, 133, 59),),
                           title: const Text("Edit", style: TextStyle(color: Color.fromARGB(255, 57, 133, 59), fontSize: 16.0, fontWeight: FontWeight.bold)),
                         )
