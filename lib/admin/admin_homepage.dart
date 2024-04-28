@@ -72,6 +72,7 @@ class AdminHomePage extends StatelessWidget {
         
         children: [
           Expanded(child: FirebaseAnimatedList(query: ref, 
+            padding: EdgeInsets.only(bottom: 100),
             itemBuilder: (context,snapshot,index,animation){
               // Get User Info
               var id = snapshot.child("uid").value.toString();
