@@ -77,6 +77,7 @@ class AdminHomePage extends StatelessWidget {
               var fullName = snapshot.child("fullName").value.toString();
               var email = snapshot.child("email").value.toString();
               var points = snapshot.child("points").value.toString();
+              var premium = snapshot.child("premAccess").value.toString();
 
               // User Card Format
               return Card(
@@ -102,6 +103,12 @@ class AdminHomePage extends StatelessWidget {
                         Text(points + " points", 
                           style: TextStyle(
                           color: Colors.green, 
+                          fontSize: 18.0, 
+                          fontWeight: FontWeight.bold), 
+                        ),
+                        Text("Premium? " + premium, 
+                          style: TextStyle(
+                          color: Color.fromARGB(255, 255, 196, 0), 
                           fontSize: 18.0, 
                           fontWeight: FontWeight.bold), 
                         ),
