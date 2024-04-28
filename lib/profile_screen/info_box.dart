@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/widgets.dart';
 import 'package:language_app/profile_screen/change_password.dart';
 
 class InfoBox extends StatelessWidget {

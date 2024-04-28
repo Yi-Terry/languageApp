@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:language_app/admin/admin_homepage.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
-import 'package:language_app/signup_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:language_app/signup_screen_test.dart';
 
@@ -43,14 +42,21 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               Image.asset(
                 'assets/images/languageAppIcon.jpg',
                 width: 200,
                 height: 200,
               ),
-              Text('Welcome to BeyondLangauage, Login!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-              SizedBox(height: 15,),
+              Text(
+                'Welcome to BeyondLangauage, Login!',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(
+                height: 15,
+              ),
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(
@@ -124,7 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       progressDialog.dismiss();
                     }
                   },
-                  child: const Text('Login', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                  child: const Text('Login',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16))),
 
               const SizedBox(
                 height: 10,

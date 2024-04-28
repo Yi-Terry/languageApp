@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:language_app/profile_screen/parent_view_login_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:ndialog/ndialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChangeParentPassword extends StatefulWidget {
@@ -95,6 +94,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                 var confirmParentPassword = parentConfirmController.text.trim();
                 String curentParentPassword = await fetchUserParentPassword();
 
+                //handle incorrect input conditions
                 if (parentPassword.isEmpty || confirmParentPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
@@ -112,20 +112,24 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                           'Password cannot be the same as the previous password');
                 } else {
                   try {
+                    //fetch current user uid
                     String uid = await fetchUserID();
 
+                    //reference database
                     DatabaseReference userRef =
                         FirebaseDatabase.instance.ref().child('Users');
 
+                    //update parentPassword in database
                     await userRef
                         .child(uid)
                         .update({'parentPassword': parentPassword});
                     Fluttertoast.showToast(msg: 'Success');
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return const ParentViewLogin();
+                      return const ParentViewLogin(); //return to parent view login page
                     }));
                   } on FirebaseAuthException catch (e) {
+                    //handle caught errors
                     if (e.code == 'weak-password') {
                       Fluttertoast.showToast(msg: 'Password is weak');
                     }
@@ -137,7 +141,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
               child: Text('Submit', style: TextStyle(fontSize: 16))),
           ElevatedButton(
             onPressed: () {
-              // Navigate to home page
+              // Navigate to parent login page
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return const ParentViewLogin();
               }));

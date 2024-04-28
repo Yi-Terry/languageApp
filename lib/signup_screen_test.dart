@@ -143,11 +143,13 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
                         'points': 0,
                         'parentPassword': '',
                         'password': password,
-                        'statistics': {
-                          'questionsCompleted': 0,
-                          'questionsCorrect': 0,
-                          'questionsWrong': 0,
-                        }
+                        'premAccess': false,
+                      });
+
+                      await userRef.child(uid).child('statistics').set({
+                        'questionsCompleted': 0,
+                        'questionsCorrect': 0,
+                        'questionsWrong': 0,
                       });
 
                       Fluttertoast.showToast(msg: 'Success');
