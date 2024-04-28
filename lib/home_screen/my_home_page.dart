@@ -25,6 +25,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> selectedAnswer = [];
   Widget? activeScreen;
+  int userPoints = 0;
+  final int premiumPtsRequirement = 500;    // Points needed to unlock the premium level @ Avinash K
+  bool hasPremiumAccess = false;
 
   // resets list of selected answer array to 0, brings to home screen page @Kelly O
   void getRewards() {
@@ -153,6 +156,38 @@ class _MyHomePageState extends State<MyHomePage> {
     return 0; //otherwise return 0
   }
 
+  // Checks if the current user has premium access. True = has access; False = does not have access   @ Avinash K
+  Future<bool> checkForPremium() async {
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref = FirebaseDatabase.instance.ref();
+      final DatabaseEvent event = await ref.child("Users/${currentUser.uid}/premAccess").once();  // Get the boolean value from the specific user
+      final DataSnapshot snapshot = event.snapshot;
+      if (snapshot.value != null) {
+        return snapshot.value as bool;
+      }
+    }
+    return Future.value(false); // Return false by default
+  }
+
+  // Taken from collect_rewards   @ Avinash K
+  void updateUserPoints(int pointsToBeAdded) async {
+    final User? currentUser = await getCurrentUser();
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Users/${currentUser?.uid}"); // Access the record of the current user
+    int newPoints = userPoints + pointsToBeAdded;
+
+    // Update the user's points
+    await ref.update({"points": newPoints});
+  }
+
+  void updatePremiumStatus(bool newStatus) async {
+    final User? currentUser = await getCurrentUser();
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Users/${currentUser?.uid}");
+
+    // Update the user's premium status based on newStatus. @ Avinash K
+    await ref.update({"premAccess": newStatus});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -173,6 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.blue,
                     ),
                     _buildPointsWidget(),
+                    _getPremiumCheck(),
                   ],
                 ),
                 const Text(
@@ -280,7 +316,105 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: const Color.fromARGB(255, 255, 215, 0),
                           text: "Premium",
                           onTap: () {
-                            goToPremium();
+                            if (hasPremiumAccess) {
+                              goToPremium();
+                            }
+                            else {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                  AlertDialog(
+                                    title: const Text("Buy Premium"),
+                                    content: Text("Would you like to buy premium for $premiumPtsRequirement points?",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ) 
+                                    ),
+                                    actions: <Widget>[
+                                      // Cancel button
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(),
+                                        child: Text("Cancel",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold, 
+                                            fontSize: 20,
+                                            color: Colors.red,
+                                            ),
+                                          ),
+                                      ),
+                                      // Buy button
+                                      TextButton(
+                                        onPressed: () { 
+                                          Navigator.of(context).pop();
+                                          if (userPoints >= premiumPtsRequirement) {
+                                            updateUserPoints(-premiumPtsRequirement);   // Parameter is negative since the user spends points.
+                                            updatePremiumStatus(true);      // Update user's premium access in the database.
+                                            // Inform user that they now have premium.
+                                            showDialog<String> (          
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                AlertDialog(
+                                                  content: const Text("Premium bought successfully!",
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                    )
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                        // Refresh home page to show changes.
+                                                        setState(() {});
+                                                      },
+                                                      child: Text("OK",
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 20,
+                                                        )
+                                                      ),
+                                                    )
+                                                  ],
+                                                 )
+                                              );
+                                          }
+                                          else {
+                                            // Otherwise tell the user they cannot afford premium.
+                                            showDialog<String> (       
+                                              context: context,
+                                              builder: (BuildContext context) => 
+                                                AlertDialog(
+                                                  content: const Text("You do not have enough points!",
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                    )
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () => Navigator.of(context).pop(),
+                                                      child: Text("OK",
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 20,
+                                                        )
+                                                      ),
+                                                    )
+                                                  ]
+                                                )
+                                            );
+                                          } 
+                                        },
+                                        child: Text("Buy", 
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold, 
+                                            fontSize: 20,
+                                            color: Color.fromARGB(255, 73, 182, 100)
+                                            ),
+                                          )
+                                      ),
+                                    ]
+                                  )
+                              );
+                            }
                           }),
                     ),
 
@@ -288,8 +422,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ]),
 
                   const Spacer(), //UNDER GOLD @Chris Z
-
-                  // place holder for logout function
                 ],
               ),
         ),
@@ -309,13 +441,24 @@ class _MyHomePageState extends State<MyHomePage> {
           //error handling
           return Text('Error: ${snapshot.error}');
         } else {
-          final int userPoints =
+          userPoints =
               snapshot.data ?? 0; //getting snapshot of user data
           return Text(
             '$userPoints', style: const TextStyle(fontSize: 24), //displaying it
           );
         }
       },
+    );
+  }
+
+  // Translates the value of checkForPremium from a Future<bool> to a bool.   @ Avinash K
+  Widget _getPremiumCheck() {
+    return FutureBuilder<bool> (
+      future: checkForPremium(),
+      builder: (context, snapshot) {
+        hasPremiumAccess = snapshot.data ?? false;    
+        return Text("");    // The value of hasPremiumAccess does not need to be shown.
+      }
     );
   }
 }
