@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ndialog/ndialog.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 final TextEditingController fullNameController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
@@ -75,6 +77,15 @@ void userCreationSheet(BuildContext context){
                 var password = passwordController.text.trim();
                 var confirmPass = confirmController.text.trim();
 
+                //used to hash password
+                  String hashPassword(String password)
+                  {
+                    final bytes = utf8.encode(password); //converts inputed password to bytes
+                    final digest = sha256.convert(bytes); //hashes the bytes
+                    return digest.toString(); //returns the hashed password as a string
+                  }
+                  final hashedPassword = hashPassword(password); //saving the hashed password into this variable
+
                 if (fullName.isEmpty || email.isEmpty ||
                     password.isEmpty || confirmPass.isEmpty) {
                   // show error toast
@@ -119,14 +130,16 @@ void userCreationSheet(BuildContext context){
                     String uid = userCredential.user!.uid; //getting the current user ID
 
                     await userRef.child(uid).set({
-                      'fullName': fullName,
-                      'email': email,
-                      'uid': uid,
-                      'points': 0,
-                      'parentPassword':'',
-                      'password': password,
-                      'premAccess': false,
-                    });
+                        'fullName': fullName,
+                        'email': email,
+                        'uid': uid,
+                        'points': 0,
+                        'parentPassword':'',
+
+                        'premAccess': false,
+                        'password': hashedPassword
+
+                      });
 
                     await userRef.child(uid).child('statistics').set({
                       'questionsCompleted': 0,
