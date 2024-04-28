@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:language_app/profile_screen/parent_view_login_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:ndialog/ndialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
@@ -96,6 +95,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                 var parentPassword = parentPasswordController.text.trim();
                 var confirmParentPassword = parentConfirmController.text.trim();
                 String curentParentPassword = await fetchUserParentPassword();                
+
                 if (parentPassword.isEmpty || confirmParentPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
@@ -112,6 +112,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                       msg:
                           'Password cannot be the same as the previous password');
                 } else {
+
                   ProgressDialog progressDialog = ProgressDialog(
                     context,
                     title: const Text('Signing Up'),
@@ -129,26 +130,30 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                   }
                   final hashedPassword = hashPassword(parentPassword); //saving the hashed password into this variable
 
+
                   try {
+                    //fetch current user uid
                     String uid = await fetchUserID();
 
+                    //reference database
                     DatabaseReference userRef =
                         FirebaseDatabase.instance.ref().child('Users');
 
+                    //update parentPassword in database
                     await userRef
                         .child(uid)
                         .update({'parentPassword': hashedPassword});
                     Fluttertoast.showToast(msg: 'Success');
-                    Navigator.of(context).pop();
-
-                    progressDialog.dismiss();
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const ParentViewLogin(); //return to parent view login page
+                    }));
                   } on FirebaseAuthException catch (e) {
-                    progressDialog.dismiss();
+                    //handle caught errors
                     if (e.code == 'weak-password') {
                       Fluttertoast.showToast(msg: 'Password is weak');
                     }
                   } catch (e) {
-                    progressDialog.dismiss();
                     Fluttertoast.showToast(msg: 'Something went wrong');
                   }
                 }
@@ -156,7 +161,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
               child: Text('Submit', style: TextStyle(fontSize: 16))),
           ElevatedButton(
             onPressed: () {
-              // Navigate to home page
+              // Navigate to parent login page
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return const ParentViewLogin();
               }));

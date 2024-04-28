@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:language_app/profile_screen/profile_screen.dart';
-import 'package:ndialog/ndialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
@@ -98,6 +97,7 @@ class ChangePasswordState extends State<ChangePassword> {
                 var confirmPassword = confirmController.text.trim();
                 String currentPassword = await fetchUserPassword();
 
+                //handle incorrect input conditions
                 if (password.isEmpty || confirmPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
@@ -132,23 +132,26 @@ class ChangePasswordState extends State<ChangePassword> {
                   final hashedPassword = hashPassword(password); //saving the hashed password into this variable
 
                   try {
+                    //fetch current user uid
                     String uid = await fetchUserID();
 
+                    //reference database
                     DatabaseReference userRef =
                         FirebaseDatabase.instance.ref().child('Users');
 
-                    await userRef.child(uid).update({'password': hashedPassword});
-                    Fluttertoast.showToast(msg: 'Success');
-                    Navigator.of(context).pop();
 
-                    progressDialog.dismiss();
+                    await userRef.child(uid).update({'password': hashedPassword});
+
+                    Fluttertoast.showToast(msg: 'Success');
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const ProfilePage();
+                    }));
                   } on FirebaseAuthException catch (e) {
-                    progressDialog.dismiss();
                     if (e.code == 'weak-password') {
                       Fluttertoast.showToast(msg: 'Password is weak');
                     }
                   } catch (e) {
-                    progressDialog.dismiss();
                     Fluttertoast.showToast(msg: 'Something went wrong');
                   }
                 }

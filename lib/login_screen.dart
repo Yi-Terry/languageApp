@@ -42,14 +42,21 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               Image.asset(
                 'assets/images/languageAppIcon.jpg',
                 width: 200,
                 height: 200,
               ),
-              Text('Welcome to BeyondLangauage, Login!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-              SizedBox(height: 15,),
+              Text(
+                'Welcome to BeyondLangauage, Login!',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(
+                height: 15,
+              ),
               TextField(
                 controller: emailController,
                 decoration: const InputDecoration(
@@ -123,7 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       progressDialog.dismiss();
                     }
                   },
-                  child: const Text('Login', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                  child: const Text('Login',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16))),
 
               const SizedBox(
                 height: 10,

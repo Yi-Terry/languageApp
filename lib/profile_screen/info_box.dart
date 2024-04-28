@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/widgets.dart';
 import 'package:language_app/profile_screen/change_password.dart';
 
 class InfoBox extends StatelessWidget {
@@ -37,9 +38,7 @@ class InfoBox extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
-              Text(
-                  //isPswd ? '' content.length : content,
-                  content),
+              Text(isPswd ? '*' * content.length : content),
             ],
           ),
           Visibility(
