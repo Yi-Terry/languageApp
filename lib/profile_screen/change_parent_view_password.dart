@@ -111,14 +111,6 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                       msg:
                           'Password cannot be the same as the previous password');
                 } else {
-                  ProgressDialog progressDialog = ProgressDialog(
-                    context,
-                    title: const Text('Signing Up'),
-                    message: const Text('Please wait'),
-                  );
-
-                  progressDialog.show();
-
                   try {
                     String uid = await fetchUserID();
 
@@ -129,16 +121,15 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                         .child(uid)
                         .update({'parentPassword': parentPassword});
                     Fluttertoast.showToast(msg: 'Success');
-                    Navigator.of(context).pop();
-
-                    progressDialog.dismiss();
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const ParentViewLogin();
+                    }));
                   } on FirebaseAuthException catch (e) {
-                    progressDialog.dismiss();
                     if (e.code == 'weak-password') {
                       Fluttertoast.showToast(msg: 'Password is weak');
                     }
                   } catch (e) {
-                    progressDialog.dismiss();
                     Fluttertoast.showToast(msg: 'Something went wrong');
                   }
                 }

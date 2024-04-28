@@ -56,6 +56,60 @@ class ParentViewPageState extends State<ParentViewPage> {
     return "Could not fetch value: fullName"; //otherwise return error
   }
 
+  Future<int> fectchCorrectQuestions() async {
+    //getting user # of correct qusestions @Marcus F
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/statistics/questionsCorrect')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
+
+  Future<int> fetchQuestionsCompleted() async {
+    //getting user # of completed qusestions @Marcus F
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/statistics/questionsCompleted')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
+
+  Future<int> fetchQuestionsWrong() async {
+    //getting user # of completed qusestions @Marcus F
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/statistics/questionsWrong')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,28 +149,8 @@ class ParentViewPageState extends State<ParentViewPage> {
                 Padding(padding: EdgeInsets.only(bottom: 20)),
               ],
             ),
-            Text(
-              "Current Session Statistics",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 26),
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 20)),
-            Text(
-              "Points earned: (value)",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 20)),
-            Text(
-              "Questions answered correctly: (value)",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 20)),
-            Text(
-              "Total Questions Completed: (value)",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
+            Center(
+              child: _buildQuestionsCompletedWidget(),
             ),
             ElevatedButton(
               onPressed: () {
@@ -171,6 +205,29 @@ class ParentViewPageState extends State<ParentViewPage> {
               snapshot.data ?? 0; //getting snapshot of user data
           return Text(
             '$userPoints', style: const TextStyle(fontSize: 24), //displaying it
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildQuestionsCompletedWidget() {
+    //widget to get questions completed
+    return FutureBuilder<int>(
+      future: fetchQuestionsCompleted(), //runs this program
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          //loading snapshot of dat
+          return const Text('Loading...');
+        } else if (snapshot.hasError) {
+          //error handling
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final int questionsCompleted =
+              snapshot.data ?? 0; //getting snapshot of user data
+          return Text(
+            "Total Questions Completed: $questionsCompleted",
+            style: const TextStyle(fontSize: 24), //displaying it
           );
         }
       },

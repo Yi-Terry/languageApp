@@ -66,6 +66,60 @@ class CollectRewardsPage extends StatelessWidget {
     return 0; //otherwise return 0
   }
 
+  Future<int> fectchCorrectQuestions() async {
+    //getting user # of correct qusestions @Marcus F
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/statistics/questionsCorrect')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
+
+  Future<int> fetchQuestionsCompleted() async {
+    //getting user # of completed qusestions @Marcus F
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/statistics/questionsCompleted')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
+
+  Future<int> fetchQuestionsWrong() async {
+    //getting user # of completed qusestions @Marcus F
+    final User? currentUser = await getCurrentUser();
+    if (currentUser != null) {
+      final DatabaseReference ref =
+          FirebaseDatabase.instance.ref(); //referencing database
+      final DatabaseEvent event = await ref
+          .child('Users/${currentUser.uid}/statistics/questionsWrong')
+          .once(); //going to the table to get this
+      final DataSnapshot snapshot =
+          event.snapshot; //handling the data into a snapshot
+      if (snapshot.value != null) {
+        return snapshot.value as int; //returning the value as an int
+      }
+    }
+    return 0; //otherwise return 0
+  }
+
   // Updates the current user's points in the database. pointsToBeAdded = earnedPoints + currentPoints. @ Avinash K
   void updateUserPoints(int pointsToBeAdded) async {
     final User? currentUser = await getCurrentUser();
@@ -123,6 +177,28 @@ class CollectRewardsPage extends StatelessWidget {
           earnedPoints += 10 * difficultyMultiplier;
     }
     */
+
+    // //update # of questions completed
+    //   int questionsCompleted += 3;
+
+    //   //update # of correct questions
+    //   questionsCorrect = await fectchCorrectQuestions();
+    //   questionsCorrect += correctQuestions;
+
+    void updateUserStatistics(
+        int questionsCompleted, questionsCorrect, int questionsWrong) async {
+      final User? currentUser = await getCurrentUser();
+      DatabaseReference ref = FirebaseDatabase.instance.ref(
+          "Users/${currentUser?.uid}/statistics"); // Access the record of the current user
+
+      // Update the user's statistics
+      await ref.update({
+        "questionsCompleted": questionsCompleted,
+        "questionsCorrect": questionsCorrect,
+        "questionsWrong": questionsWrong
+      });
+    }
+
     return LayoutBuilder(builder: (ctx, constraints) {
       final width = constraints.maxWidth;
       return SizedBox(
@@ -209,11 +285,24 @@ class CollectRewardsPage extends StatelessWidget {
             ElevatedButton(
               // Collect Rewards button
               // onPressed: collectRewards,
-              onPressed: () {
+              onPressed: () async {
                 int totalPoints = currentPoints + earnedPoints;
                 updateUserPoints(
                     totalPoints); // Update the user's points with the addition of earnedPoints in the database.
 
+                //fetch and update # of questions completed @Marcus F
+                int questionsCompleted = await fetchQuestionsCompleted();
+                questionsCompleted += 3;
+
+                //fetch and update # of questions answered correctly
+                int questionsCorrect = await fectchCorrectQuestions();
+                questionsCorrect += correctQuestions;
+
+                int questionsWrong = await fetchQuestionsWrong();
+                questionsWrong += (3 - correctQuestions);
+
+                updateUserStatistics(
+                    questionsCompleted, questionsCorrect, questionsWrong);
                 questions.shuffle();
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: (context) {
