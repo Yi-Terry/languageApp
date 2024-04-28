@@ -76,7 +76,7 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium, r
                   fontSize: 18.0,), 
                 ),
                 ScrollWheel(
-                  currentvalue: rightQ,
+                  currentValue: rightQ,
                   onValueChanged: (value) => rightQ = value,
                 ),
                 Text("/", 
@@ -85,7 +85,7 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium, r
                   fontWeight: FontWeight.bold), 
                 ),
                 ScrollWheel(
-                  currentvalue: totalQ,
+                  currentValue: totalQ,
                   onValueChanged: (value) => totalQ = value,
                 ),
               ],
@@ -128,7 +128,7 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium, r
                 // request to firebase auth
                 ProgressDialog progressDialog = ProgressDialog(
                   context,
-                  title: const  Text('Updating Info...'),
+                  title: const Text('Updating Info...'),
                   message: const Text('Please wait'),
                 );
 
@@ -197,22 +197,22 @@ class _ToggleSliderState extends State<ToggleSlider> {
 }
 
 class ScrollWheel extends StatefulWidget {
-  final int currentvalue; // Defines a parameter for the scroll wheel
+  final int currentValue;
   final ValueChanged<int> onValueChanged;
 
-  ScrollWheel({Key? key, required this.currentvalue, required this.onValueChanged}) : super(key: key);
+  ScrollWheel({Key? key, required this.currentValue, required this.onValueChanged}) : super(key: key);
 
   @override
   ScrollWheelState createState() => ScrollWheelState();
 }
 
 class ScrollWheelState extends State<ScrollWheel> {
-  late int currentvalue; // Declare as late so it can be assigned in initState
+  late int currentValue;
 
   @override
   void initState() {
     super.initState();
-    currentvalue = widget.currentvalue;
+    currentValue = widget.currentValue;
   }
 
   @override
@@ -220,12 +220,12 @@ class ScrollWheelState extends State<ScrollWheel> {
     return Column(
       children: <Widget>[
         NumberPicker(
-          value: currentvalue,
+          value: currentValue,
           itemHeight: 30,
           minValue: 0,
           maxValue: 1000000000000000000,
           onChanged: (value) => setState(() {
-            currentvalue = value;
+            currentValue = value;
             widget.onValueChanged(value);
           }),
           selectedTextStyle: TextStyle(

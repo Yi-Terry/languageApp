@@ -85,12 +85,14 @@ class AdminHomePage extends StatelessWidget {
               var totalQuestions = snapshot.child("statistics").child("questionsCompleted").value.toString();
               var rightQuestions = snapshot.child("statistics").child("questionsCorrect").value.toString();
               var percentage = "";
-              try{
-                percentage = (double.parse(((double.parse(rightQuestions) / double.parse(totalQuestions)) * 100).toStringAsFixed(2))).toString();
-              } catch (e) {
-                Fluttertoast.showToast(msg: 'Something went wrong');
+              if(totalQuestions != "0"){
+                try{
+                  percentage = (double.parse(((double.parse(rightQuestions) / double.parse(totalQuestions)) * 100).toStringAsFixed(2))).toString();
+                } catch (e) {
+                  Fluttertoast.showToast(msg: 'Something went wrong');
+                }
               }
-
+              
               // User Card Format
               return Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -112,23 +114,35 @@ class AdminHomePage extends StatelessWidget {
                           fontSize: 16.0, 
                           fontWeight: FontWeight.bold), 
                         ),
-                        Text("Stats: " + rightQuestions + "/" + totalQuestions + " questions (" + percentage + "%)" , 
+                        Text(totalQuestions != "0" 
+                          ? "Stats: " + rightQuestions + "/" + totalQuestions + " Questions (" + percentage + "%)"
+                          : "Stats: " + rightQuestions + "/" + totalQuestions + " Questions",
                           style: TextStyle(
-                          color: Colors.green, 
-                          fontSize: 15.0, 
+                          color: const Color.fromARGB(255, 0, 132, 4), 
+                          fontSize: 17.0, 
                           fontWeight: FontWeight.bold), 
                         ),
-                        Text(points + " points", 
+                        Text(points + " Points", 
                           style: TextStyle(
                           color: Colors.green, 
                           fontSize: 18.0, 
                           fontWeight: FontWeight.bold), 
                         ),
-                        Text("Premium Access: " + premium, 
-                          style: TextStyle(
-                          color: Color.fromARGB(255, 255, 196, 0), 
-                          fontSize: 18.0, 
-                          fontWeight: FontWeight.bold), 
+                        Row(
+                          children: [
+                            Text("Premium Access: ", 
+                              style: TextStyle(
+                              color: Color.fromARGB(255, 236, 181, 0), 
+                              fontSize: 18.0, 
+                              fontWeight: FontWeight.bold), 
+                            ),
+                            Text(premium == "true" ? "Allowed" : "Not Allowed", 
+                              style: TextStyle(
+                              color: (premium == "true") ? Color.fromARGB(255, 0, 187, 234) : const Color.fromARGB(255, 192, 13, 0), 
+                              fontSize: 18.0, 
+                              fontWeight: FontWeight.bold), 
+                            ),
+                          ],
                         ),
                       ],
                     ), 
@@ -138,7 +152,7 @@ class AdminHomePage extends StatelessWidget {
                     icon: const Icon(Icons.more_vert, size: 30,),
                     itemBuilder: (context) => [
 
-                      // Update User Data
+                      // Update User Info
                       PopupMenuItem(
                         value: 1,
                         child: ListTile(
@@ -168,7 +182,7 @@ class AdminHomePage extends StatelessWidget {
                                   content: Text("This action cannot be undone.",
                                     style: TextStyle(fontSize: 16)),
                                   actions: [
-                                    // 'No' option
+                                    // 'Cancel' option
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
@@ -176,7 +190,7 @@ class AdminHomePage extends StatelessWidget {
                                       },
                                       child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                                     ),
-                                    // 'Yes' option
+                                    // 'Delete' option
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
