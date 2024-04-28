@@ -128,6 +128,12 @@ void userCreationSheet(BuildContext context){
                       'premAccess': false,
                     });
 
+                    await userRef.child(uid).child('statistics').set({
+                      'questionsCompleted': 0,
+                      'questionsCorrect': 0,
+                      'questionsWrong': 0,
+                    });
+
                     Fluttertoast.showToast(msg: 'Success');
 
                   } else {
