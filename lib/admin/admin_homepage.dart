@@ -69,14 +69,17 @@ class AdminHomePage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Column(
+        
         children: [
           Expanded(child: FirebaseAnimatedList(query: ref, 
+            padding: EdgeInsets.only(bottom: 100),
             itemBuilder: (context,snapshot,index,animation){
               // Get User Info
               var id = snapshot.child("uid").value.toString();
               var fullName = snapshot.child("fullName").value.toString();
               var email = snapshot.child("email").value.toString();
               var points = snapshot.child("points").value.toString();
+              var premium = snapshot.child("premAccess").value.toString();
 
               // User Card Format
               return Card(
@@ -105,6 +108,12 @@ class AdminHomePage extends StatelessWidget {
                           fontSize: 18.0, 
                           fontWeight: FontWeight.bold), 
                         ),
+                        Text("Premium Access: " + premium, 
+                          style: TextStyle(
+                          color: Color.fromARGB(255, 255, 196, 0), 
+                          fontSize: 18.0, 
+                          fontWeight: FontWeight.bold), 
+                        ),
                       ],
                     ), 
                     
@@ -117,7 +126,7 @@ class AdminHomePage extends StatelessWidget {
                       PopupMenuItem(
                         value: 1,
                         child: ListTile(
-                          onTap: () => editUserSheet(context, id, fullName, email, points),
+                          onTap: () => editUserSheet(context, id, fullName, email, points, premium),
                           leading: const Icon(Icons.edit, color: Color.fromARGB(255, 57, 133, 59),),
                           title: const Text("Edit", style: TextStyle(color: Color.fromARGB(255, 57, 133, 59), fontSize: 16.0, fontWeight: FontWeight.bold)),
                         )

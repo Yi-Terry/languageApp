@@ -7,11 +7,14 @@ import 'package:ndialog/ndialog.dart';
 final TextEditingController fullNameController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController pointsController = TextEditingController();
+bool isPremium = false;
 
-void editUserSheet(BuildContext context, id, fullName, email, points){
+void editUserSheet(BuildContext context, id, fullName, email, points, premium){
   fullNameController.text = fullName;
   emailController.text = email;
   pointsController.text = points;
+  isPremium = premium.toLowerCase() == 'true';
+
   showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: Colors.blue[100],
@@ -57,7 +60,20 @@ void editUserSheet(BuildContext context, id, fullName, email, points){
               ),
             ),
 
-            const SizedBox(height: 20,),
+            const SizedBox(height: 10,),
+
+            Row(
+              children: [
+                Text("Premium Access:  ", 
+                  style: TextStyle(
+                  fontSize: 18.0,), 
+                ),
+                const SizedBox(width: 2,),
+                ToggleSlider(),
+              ],
+            ),
+
+            const SizedBox(height: 10,),
             
             ElevatedButton(
               onPressed: () async {
@@ -91,6 +107,7 @@ void editUserSheet(BuildContext context, id, fullName, email, points){
                     'fullName': fullName,
                     'email': email,
                     'points': int.parse(points),
+                    'premAccess': isPremium,
                   });
 
                   Fluttertoast.showToast(msg: 'Success');
@@ -110,9 +127,31 @@ void editUserSheet(BuildContext context, id, fullName, email, points){
                 Navigator.pop(context);
                 Navigator.pop(context);
               }, 
-              child: const Text("Update")),
+              child: const Text("Update", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)),
           ],
         ),
       );
     });
+}
+
+class ToggleSlider extends StatefulWidget {
+  @override
+  _ToggleSliderState createState() => _ToggleSliderState();
+}
+
+class _ToggleSliderState extends State<ToggleSlider> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Switch(
+      value: isPremium,
+      onChanged: (value) {
+        setState(() {
+          isPremium = value;
+        });
+      },
+      activeTrackColor: Colors.lightGreenAccent,
+      activeColor: Colors.green,
+    );
+  }
 }
