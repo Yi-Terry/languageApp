@@ -124,8 +124,8 @@ void userCreationSheet(BuildContext context){
                       'uid': uid,
                       'points': 0,
                       'parentPassword':'',
-                      'password': password
-
+                      'password': password,
+                      'premAccess': false,
                     });
 
                     Fluttertoast.showToast(msg: 'Success');
