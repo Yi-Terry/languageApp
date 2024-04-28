@@ -94,7 +94,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
               onPressed: () async {
                 var parentPassword = parentPasswordController.text.trim();
                 var confirmParentPassword = parentConfirmController.text.trim();
-                String curentParentPassword = await fetchUserParentPassword();                
+                String curentParentPassword = await fetchUserParentPassword();
 
                 if (parentPassword.isEmpty || confirmParentPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
@@ -112,24 +112,17 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                       msg:
                           'Password cannot be the same as the previous password');
                 } else {
-
-                  ProgressDialog progressDialog = ProgressDialog(
-                    context,
-                    title: const Text('Signing Up'),
-                    message: const Text('Please wait'),
-                  );
-
-                  progressDialog.show();
-
                   //used to hash password
-                  String hashPassword(String password)
-                  {
-                    final bytes = utf8.encode(password); //converts inputed password to bytes
+                  String hashPassword(String password) {
+                    final bytes = utf8
+                        .encode(password); //converts inputed password to bytes
                     final digest = sha256.convert(bytes); //hashes the bytes
-                    return digest.toString(); //returns the hashed password as a string
+                    return digest
+                        .toString(); //returns the hashed password as a string
                   }
-                  final hashedPassword = hashPassword(parentPassword); //saving the hashed password into this variable
 
+                  final hashedPassword = hashPassword(
+                      parentPassword); //saving the hashed password into this variable
 
                   try {
                     //fetch current user uid
