@@ -4,6 +4,7 @@ import 'package:language_app/admin/delete_user.dart';
 import 'package:language_app/admin/user_creation.dart';
 import 'package:language_app/admin/edit_user.dart';
 import 'package:language_app/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -53,6 +54,7 @@ class AdminHomePage extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             Navigator.of(ctx).pop();
+                            FirebaseAuth.instance.signOut();
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(builder: (context) {
                               return LoginScreen();
