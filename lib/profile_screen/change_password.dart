@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
 
@@ -97,40 +96,51 @@ class ChangePasswordState extends State<ChangePassword> {
                 var confirmPassword = confirmController.text.trim();
                 String currentPassword = await fetchUserPassword();
 
+                //used to hash password
+                String hashPassword(
+                  String password,
+                ) {
+                  final bytes = utf8
+                      .encode(password); //converts inputed password to bytes
+                  final digest = sha256.convert(bytes); //hashes the bytes
+                  return digest
+                      .toString(); //returns the hashed password as a string
+                }
+
+                //used to hash confirmPassword
+                String hashConfirmPassword(
+                  String confirmPassword,
+                ) {
+                  final bytes = utf8.encode(
+                      confirmPassword); //converts inputed password to bytes
+                  final digest = sha256.convert(bytes); //hashes the bytes
+                  return digest
+                      .toString(); //returns the hashed password as a string
+                }
+
+                final hashedPassword = hashPassword(
+                    password); //saving the hashed password into this variable
+
+                final hashedConfirmPassword =
+                    hashConfirmPassword(confirmPassword);
+
                 //handle incorrect input conditions
-                if (password.isEmpty || confirmPassword.isEmpty) {
+                if (hashedPassword.isEmpty || hashedConfirmPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
-                } else if (password.length < 6) {
+                } else if (hashedPassword.length < 6) {
                   Fluttertoast.showToast(
                       msg: 'Weak Password, at least 6 characters are required');
                   return;
-                } else if (password != confirmPassword) {
+                } else if (hashedPassword != hashedConfirmPassword) {
                   Fluttertoast.showToast(msg: 'Passwords do not match');
                   return;
                 } else if (currentPassword.isNotEmpty &&
-                    password == currentPassword) {
+                    hashedPassword == currentPassword) {
                   Fluttertoast.showToast(
                       msg:
                           'Password cannot be the same as the previous password');
                 } else {
-                  ProgressDialog progressDialog = ProgressDialog(
-                    context,
-                    title: const Text('Signing Up'),
-                    message: const Text('Please wait'),
-                  );
-
-                  progressDialog.show();
-                  
-                     //used to hash password
-                  String hashPassword(String password)
-                  {
-                    final bytes = utf8.encode(password); //converts inputed password to bytes
-                    final digest = sha256.convert(bytes); //hashes the bytes
-                    return digest.toString(); //returns the hashed password as a string
-                  }
-                  final hashedPassword = hashPassword(password); //saving the hashed password into this variable
-
                   try {
                     //fetch current user uid
                     String uid = await fetchUserID();
@@ -139,8 +149,9 @@ class ChangePasswordState extends State<ChangePassword> {
                     DatabaseReference userRef =
                         FirebaseDatabase.instance.ref().child('Users');
 
-
-                    await userRef.child(uid).update({'password': hashedPassword});
+                    await userRef
+                        .child(uid)
+                        .update({'password': hashedPassword});
 
                     Fluttertoast.showToast(msg: 'Success');
                     Navigator.of(context)

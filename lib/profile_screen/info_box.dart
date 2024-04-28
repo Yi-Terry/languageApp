@@ -38,7 +38,7 @@ class InfoBox extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
-              Text(isPswd ? '*' * content.length : content),
+              Text(isPswd ? '******' : content),
             ],
           ),
           Visibility(
