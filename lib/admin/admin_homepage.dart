@@ -69,6 +69,7 @@ class AdminHomePage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Column(
+        
         children: [
           Expanded(child: FirebaseAnimatedList(query: ref, 
             itemBuilder: (context,snapshot,index,animation){
@@ -106,7 +107,7 @@ class AdminHomePage extends StatelessWidget {
                           fontSize: 18.0, 
                           fontWeight: FontWeight.bold), 
                         ),
-                        Text("Premium? " + premium, 
+                        Text("Premium Access: " + premium, 
                           style: TextStyle(
                           color: Color.fromARGB(255, 255, 196, 0), 
                           fontSize: 18.0, 
@@ -124,7 +125,7 @@ class AdminHomePage extends StatelessWidget {
                       PopupMenuItem(
                         value: 1,
                         child: ListTile(
-                          onTap: () => editUserSheet(context, id, fullName, email, points),
+                          onTap: () => editUserSheet(context, id, fullName, email, points, premium),
                           leading: const Icon(Icons.edit, color: Color.fromARGB(255, 57, 133, 59),),
                           title: const Text("Edit", style: TextStyle(color: Color.fromARGB(255, 57, 133, 59), fontSize: 16.0, fontWeight: FontWeight.bold)),
                         )
