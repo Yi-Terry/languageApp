@@ -152,6 +152,15 @@ class ParentViewPageState extends State<ParentViewPage> {
             Center(
               child: _buildQuestionsCompletedWidget(),
             ),
+            Center(
+              child: _buildQuestionsCorrectWidget(),
+            ),
+            Center(
+              child: _buildQuestionsWrongWidget(),
+            ),
+            Center(
+              child: _buildQuestionsCorrectPercentageWidget(),
+            ),
             ElevatedButton(
               onPressed: () {
                 // Navigate to profile page
@@ -182,7 +191,7 @@ class ParentViewPageState extends State<ParentViewPage> {
               snapshot.data ?? ""; //getting snapshot of user data
           return Text(
             "Progress of " + userName,
-            style: const TextStyle(fontSize: 24), //displaying it
+            style: const TextStyle(fontSize: 20), //displaying it
           );
         }
       },
@@ -204,7 +213,7 @@ class ParentViewPageState extends State<ParentViewPage> {
           final int userPoints =
               snapshot.data ?? 0; //getting snapshot of user data
           return Text(
-            '$userPoints', style: const TextStyle(fontSize: 24), //displaying it
+            '$userPoints', style: const TextStyle(fontSize: 20), //displaying it
           );
         }
       },
@@ -227,7 +236,88 @@ class ParentViewPageState extends State<ParentViewPage> {
               snapshot.data ?? 0; //getting snapshot of user data
           return Text(
             "Total Questions Completed: $questionsCompleted",
-            style: const TextStyle(fontSize: 24), //displaying it
+            style: const TextStyle(fontSize: 20), //displaying it
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildQuestionsCorrectWidget() {
+    //widget to get total # of questions correct
+    return FutureBuilder<int>(
+      future: fectchCorrectQuestions(), //runs this program
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          //loading snapshot of dat
+          return const Text('Loading...');
+        } else if (snapshot.hasError) {
+          //error handling
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final int questionsCorrect =
+              snapshot.data ?? 0; //getting snapshot of user data
+          return Text(
+            "Total Questions Completed Correctly : $questionsCorrect",
+            style: const TextStyle(
+                fontSize: 20, color: Colors.green), //displaying it
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildQuestionsWrongWidget() {
+    //widget to get total # of questions correct
+    return FutureBuilder<int>(
+      future: fetchQuestionsWrong(), //runs this program
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          //loading snapshot of data
+          return const Text('Loading...');
+        } else if (snapshot.hasError) {
+          //error handling
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final int questionsWrong =
+              snapshot.data ?? 0; //getting snapshot of user data
+          return Text(
+            "Total Questions Completed Incorrectly : $questionsWrong",
+            style: const TextStyle(
+                fontSize: 20, color: Colors.red), //displaying it
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildQuestionsCorrectPercentageWidget() {
+    //widget to get total # of questions correct
+    return FutureBuilder<List<int>>(
+      future: Future.wait([
+        fetchQuestionsWrong(),
+        fectchCorrectQuestions()
+      ]), //runs this program
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          //loading snapshot of data
+          return const Text('Loading...');
+        } else if (snapshot.hasError) {
+          //error handling
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final List<int> data = snapshot.data ?? [0, 0];
+          final int correctCount = data[0];
+          final int wrongCount = data[1];
+          final int totalQuestions = correctCount + wrongCount;
+          final double correctPercentage =
+              (correctCount / totalQuestions) * 100;
+          return Text(
+            "Questions Correct Percentage: " +
+                correctPercentage.toStringAsFixed(2) +
+                "%",
+            style: const TextStyle(
+                fontSize: 20, color: Colors.green), //displaying it
           );
         }
       },
