@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -13,14 +11,16 @@ final TextEditingController pointsController = TextEditingController();
 final TextEditingController rightQController = TextEditingController();
 final TextEditingController totalQController = TextEditingController();
 bool isPremium = false;
+int rightQ = 0;
+int totalQ = 0;
 
 void editUserSheet(BuildContext context, id, fullName, email, points, premium, rightQuestions, totalQuestions){
   fullNameController.text = fullName;
   emailController.text = email;
   pointsController.text = points;
-  rightQController.text = rightQuestions;
-  totalQController.text = totalQuestions;
   isPremium = premium.toLowerCase() == 'true';
+  rightQ = (rightQuestions != "null") ? int.parse(rightQuestions) : 0;
+  totalQ = (totalQuestions != "null") ? int.parse(totalQuestions) : 0;
 
   showModalBottomSheet(
     isScrollControlled: true,
@@ -76,7 +76,8 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium, r
                   fontSize: 18.0,), 
                 ),
                 ScrollWheel(
-                  numQuestions: int.parse(rightQuestions),
+                  currentvalue: rightQ,
+                  onValueChanged: (value) => rightQ = value,
                 ),
                 Text("/", 
                   style: TextStyle(
@@ -84,12 +85,11 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium, r
                   fontWeight: FontWeight.bold), 
                 ),
                 ScrollWheel(
-                  numQuestions: int.parse(totalQuestions),
+                  currentvalue: totalQ,
+                  onValueChanged: (value) => totalQ = value,
                 ),
               ],
             ),
-
-            const SizedBox(height: 20,),
 
             Row(
               children: [
@@ -109,14 +109,19 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium, r
                 var fullName = fullNameController.text.trim(); 
                 var email = emailController.text.trim();
                 var points = pointsController.text.trim();
-                //var wrongQuestions = totalQuestions - rightQuestions;
+                int wrongQ = totalQ - rightQ;
 
                 if (fullName.isEmpty ||
                     email.isEmpty ||
                     points.isEmpty) {
                   // show error toast
-
                   Fluttertoast.showToast(msg: 'Please fill all fields');
+                  return;
+                }
+
+                if (rightQ > totalQ) {
+                  // show error toast
+                  Fluttertoast.showToast(msg: 'Invalid Stat Configuration');
                   return;
                 }
 
@@ -138,9 +143,12 @@ void editUserSheet(BuildContext context, id, fullName, email, points, premium, r
                     'email': email,
                     'points': int.parse(points),
                     'premAccess': isPremium,
-                    // 'questionsCorrect': int.parse(rightQuestions),
-                    // 'questionsCompleted': int.parse(totalQuestions),
-                    // 'questionsWrong': int.parse(wrongQuestions),
+                  });
+
+                  userRef.child(id).child('statistics').update({
+                    'questionsCompleted': totalQ,
+                    'questionsCorrect': rightQ,
+                    'questionsWrong': wrongQ,
                   });
 
                   Fluttertoast.showToast(msg: 'Success');
@@ -173,7 +181,6 @@ class ToggleSlider extends StatefulWidget {
 }
 
 class _ToggleSliderState extends State<ToggleSlider> {
-
   @override
   Widget build(BuildContext context) {
     return Switch(
@@ -190,21 +197,22 @@ class _ToggleSliderState extends State<ToggleSlider> {
 }
 
 class ScrollWheel extends StatefulWidget {
-  final int numQuestions; // Defines a parameter for the scroll wheel
+  final int currentvalue; // Defines a parameter for the scroll wheel
+  final ValueChanged<int> onValueChanged;
 
-  ScrollWheel({Key? key, required this.numQuestions}) : super(key: key);
+  ScrollWheel({Key? key, required this.currentvalue, required this.onValueChanged}) : super(key: key);
 
   @override
   ScrollWheelState createState() => ScrollWheelState();
 }
 
 class ScrollWheelState extends State<ScrollWheel> {
-  late int numQuestions; // Declare as late so it can be assigned in initState
+  late int currentvalue; // Declare as late so it can be assigned in initState
 
   @override
   void initState() {
     super.initState();
-    numQuestions = widget.numQuestions;
+    currentvalue = widget.currentvalue;
   }
 
   @override
@@ -212,11 +220,14 @@ class ScrollWheelState extends State<ScrollWheel> {
     return Column(
       children: <Widget>[
         NumberPicker(
-          value: numQuestions,
+          value: currentvalue,
           itemHeight: 30,
           minValue: 0,
-          maxValue: 1000,
-          onChanged: (value) => setState(() => numQuestions = value),
+          maxValue: 1000000000000000000,
+          onChanged: (value) => setState(() {
+            currentvalue = value;
+            widget.onValueChanged(value);
+          }),
           selectedTextStyle: TextStyle(
             color: Colors.purple, 
             fontSize: 24, 

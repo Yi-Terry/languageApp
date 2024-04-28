@@ -84,7 +84,6 @@ class AdminHomePage extends StatelessWidget {
 
               var totalQuestions = snapshot.child("statistics").child("questionsCompleted").value.toString();
               var rightQuestions = snapshot.child("statistics").child("questionsCorrect").value.toString();
-              var wrongQuestions = snapshot.child("statistics").child("questionsWrong").value.toString();
               var percentage = "";
               try{
                 percentage = (double.parse(((double.parse(rightQuestions) / double.parse(totalQuestions)) * 100).toStringAsFixed(2))).toString();
@@ -145,7 +144,13 @@ class AdminHomePage extends StatelessWidget {
                         child: ListTile(
                           onTap: () => editUserSheet(context, id, fullName, email, points, premium, rightQuestions, totalQuestions),
                           leading: const Icon(Icons.edit, color: Color.fromARGB(255, 57, 133, 59),),
-                          title: const Text("Edit", style: TextStyle(color: Color.fromARGB(255, 57, 133, 59), fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          title: const Text("Edit", 
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 57, 133, 59), 
+                              fontSize: 16.0, 
+                              fontWeight: FontWeight.bold
+                            )
+                          ),
                         )
                       ),
 
