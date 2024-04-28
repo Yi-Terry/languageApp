@@ -3,6 +3,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:language_app/profile_screen/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -111,6 +114,23 @@ class ChangePasswordState extends State<ChangePassword> {
                       msg:
                           'Password cannot be the same as the previous password');
                 } else {
+                  ProgressDialog progressDialog = ProgressDialog(
+                    context,
+                    title: const Text('Signing Up'),
+                    message: const Text('Please wait'),
+                  );
+
+                  progressDialog.show();
+                  
+                     //used to hash password
+                  String hashPassword(String password)
+                  {
+                    final bytes = utf8.encode(password); //converts inputed password to bytes
+                    final digest = sha256.convert(bytes); //hashes the bytes
+                    return digest.toString(); //returns the hashed password as a string
+                  }
+                  final hashedPassword = hashPassword(password); //saving the hashed password into this variable
+
                   try {
                     //fetch current user uid
                     String uid = await fetchUserID();
@@ -119,8 +139,9 @@ class ChangePasswordState extends State<ChangePassword> {
                     DatabaseReference userRef =
                         FirebaseDatabase.instance.ref().child('Users');
 
-                    //update pasword in databases
-                    await userRef.child(uid).update({'password': password});
+
+                    await userRef.child(uid).update({'password': hashedPassword});
+
                     Fluttertoast.showToast(msg: 'Success');
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {

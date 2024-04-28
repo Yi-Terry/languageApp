@@ -3,6 +3,8 @@ import 'package:language_app/profile_screen/parent_view_login_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class ChangeParentPassword extends StatefulWidget {
   const ChangeParentPassword({Key? key}) : super(key: key);
@@ -92,9 +94,8 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
               onPressed: () async {
                 var parentPassword = parentPasswordController.text.trim();
                 var confirmParentPassword = parentConfirmController.text.trim();
-                String curentParentPassword = await fetchUserParentPassword();
+                String curentParentPassword = await fetchUserParentPassword();                
 
-                //handle incorrect input conditions
                 if (parentPassword.isEmpty || confirmParentPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
@@ -111,6 +112,25 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                       msg:
                           'Password cannot be the same as the previous password');
                 } else {
+
+                  ProgressDialog progressDialog = ProgressDialog(
+                    context,
+                    title: const Text('Signing Up'),
+                    message: const Text('Please wait'),
+                  );
+
+                  progressDialog.show();
+
+                  //used to hash password
+                  String hashPassword(String password)
+                  {
+                    final bytes = utf8.encode(password); //converts inputed password to bytes
+                    final digest = sha256.convert(bytes); //hashes the bytes
+                    return digest.toString(); //returns the hashed password as a string
+                  }
+                  final hashedPassword = hashPassword(parentPassword); //saving the hashed password into this variable
+
+
                   try {
                     //fetch current user uid
                     String uid = await fetchUserID();
@@ -122,7 +142,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
                     //update parentPassword in database
                     await userRef
                         .child(uid)
-                        .update({'parentPassword': parentPassword});
+                        .update({'parentPassword': hashedPassword});
                     Fluttertoast.showToast(msg: 'Success');
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
