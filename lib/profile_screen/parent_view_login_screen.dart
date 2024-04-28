@@ -6,6 +6,8 @@ import 'package:language_app/profile_screen/change_parent_view_password.dart';
 import 'package:language_app/profile_screen/parent_view.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:language_app/profile_screen/profile_screen.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class ParentViewLogin extends StatefulWidget {
   const ParentViewLogin({super.key});
@@ -85,24 +87,30 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                             //process input
                             var parentPasswordInput =
                                 parentPasswordController.text.trim();
+
+                                 //used to hash password
+                            String hashPassword(String parentPasswordInput) {
+                              final bytes = utf8.encode(
+                                  parentPasswordInput); //converts inputed password to bytes
+                              final digest =
+                                  sha256.convert(bytes); //hashes the bytes
+                              return digest
+                                  .toString(); //returns the hashed password as a string
+                            }
+
+                            final hashedPassword = hashPassword(parentPasswordInput); //saving the hashed password into this variable
+
                             if (parentPasswordInput.isEmpty) {
                               //error for empty field
                               Fluttertoast.showToast(
                                   msg: "Please enter a password");
                               return;
-                            } else if (parentPasswordInput !=
+                            } else if (hashedPassword !=
                                 userParentPassword) {
                               Fluttertoast.showToast(
                                   msg: "Incorrect Password. Please try again.");
                             }
-
-                            // ProgressDialog progressDialog = ProgressDialog(
-                            //   context,
-                            //   title: const Text('Logging In'),
-                            //   message: const Text('Please wait'),
-                            // );
-
-                            if (parentPasswordInput == userParentPassword) {
+                            if (hashedPassword == userParentPassword) {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
                                 return const ParentViewPage();

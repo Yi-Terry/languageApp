@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ndialog/ndialog.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class SignUpScreenTest extends StatefulWidget {
   const SignUpScreenTest({Key? key}) : super(key: key);
@@ -72,6 +74,15 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
                   var password = passwordController.text.trim();
                   var confirmPass = confirmController.text.trim();
 
+                  //used to hash password
+                  String hashPassword(String password)
+                  {
+                    final bytes = utf8.encode(password); //converts inputed password to bytes
+                    final digest = sha256.convert(bytes); //hashes the bytes
+                    return digest.toString(); //returns the hashed password as a string
+                  }
+                  final hashedPassword = hashPassword(password); //saving the hashed password into this variable
+
                   if (fullName.isEmpty ||
                       email.isEmpty ||
                       password.isEmpty ||
@@ -97,9 +108,6 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
 
                     return;
                   }
-
-                  // request to firebase auth
-
                   ProgressDialog progressDialog = ProgressDialog(
                     context,
                     title: const  Text('Signing Up'),
@@ -122,9 +130,7 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
 
                       // store user information in Realtime database
                       DatabaseReference userRef = FirebaseDatabase.instance.ref().child( 'Users');
-
                       String uid = userCredential.user!.uid; //getting the current user ID
-                      int dt = DateTime.now().millisecondsSinceEpoch;
 
                       await userRef.child(uid).set({
                         'fullName': fullName,
@@ -132,8 +138,9 @@ class _SignUpScreenStateTest extends State<SignUpScreenTest> {
                         'uid': uid,
                         'points': 0,
                         'parentPassword':'',
-                        'password': password,
                         'premAccess': false,
+                        'password': hashedPassword
+
                       });
 
                       await userRef.child(uid).child('statistics').set({

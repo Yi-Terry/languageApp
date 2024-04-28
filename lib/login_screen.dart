@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:language_app/admin/admin_homepage.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
-import 'package:language_app/signup_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:language_app/signup_screen_test.dart';
 

@@ -4,6 +4,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:language_app/profile_screen/profile_screen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -118,6 +121,15 @@ class ChangePasswordState extends State<ChangePassword> {
                   );
 
                   progressDialog.show();
+                  
+                     //used to hash password
+                  String hashPassword(String password)
+                  {
+                    final bytes = utf8.encode(password); //converts inputed password to bytes
+                    final digest = sha256.convert(bytes); //hashes the bytes
+                    return digest.toString(); //returns the hashed password as a string
+                  }
+                  final hashedPassword = hashPassword(password); //saving the hashed password into this variable
 
                   try {
                     String uid = await fetchUserID();
@@ -125,7 +137,7 @@ class ChangePasswordState extends State<ChangePassword> {
                     DatabaseReference userRef =
                         FirebaseDatabase.instance.ref().child('Users');
 
-                    await userRef.child(uid).update({'password': password});
+                    await userRef.child(uid).update({'password': hashedPassword});
                     Fluttertoast.showToast(msg: 'Success');
                     Navigator.of(context).pop();
 
