@@ -5,6 +5,7 @@ import 'package:language_app/admin/user_creation.dart';
 import 'package:language_app/admin/edit_user.dart';
 import 'package:language_app/login_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 DatabaseReference ref = FirebaseDatabase.instance.ref().child('Users');
 
@@ -81,6 +82,16 @@ class AdminHomePage extends StatelessWidget {
               var points = snapshot.child("points").value.toString();
               var premium = snapshot.child("premAccess").value.toString();
 
+              var totalQuestions = snapshot.child("statistics").child("questionsCompleted").value.toString();
+              var rightQuestions = snapshot.child("statistics").child("questionsCorrect").value.toString();
+              var wrongQuestions = snapshot.child("statistics").child("questionsWrong").value.toString();
+              var percentage = "";
+              try{
+                percentage = (double.parse(((double.parse(rightQuestions) / double.parse(totalQuestions)) * 100).toStringAsFixed(2))).toString();
+              } catch (e) {
+                Fluttertoast.showToast(msg: 'Something went wrong');
+              }
+
               // User Card Format
               return Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -100,6 +111,12 @@ class AdminHomePage extends StatelessWidget {
                           style: TextStyle(
                           color: Color.fromARGB(255, 233, 140, 0), 
                           fontSize: 16.0, 
+                          fontWeight: FontWeight.bold), 
+                        ),
+                        Text("Stats: " + rightQuestions + "/" + totalQuestions + " questions (" + percentage + "%)" , 
+                          style: TextStyle(
+                          color: Colors.green, 
+                          fontSize: 15.0, 
                           fontWeight: FontWeight.bold), 
                         ),
                         Text(points + " points", 
