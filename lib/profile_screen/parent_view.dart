@@ -122,16 +122,6 @@ class ParentViewPageState extends State<ParentViewPage> {
         body: ListView(
           padding: EdgeInsets.only(top: 10),
           children: [
-            //RETURN USER STATISTICS
-            /*
-            Total:
-            - total points
-            For current session:
-            - # of points earned this session
-            - correct answer
-            - number of questions answered
-            - number of questions answered for each difficulty level
-            */
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -145,21 +135,24 @@ class ParentViewPageState extends State<ParentViewPage> {
                   size: 30,
                   color: Colors.blue,
                 ),
-                _buildPointsWidget(),
+                _buildPointsWidget(), //display total points
                 Padding(padding: EdgeInsets.only(bottom: 20)),
               ],
             ),
             Center(
-              child: _buildQuestionsCompletedWidget(),
+              child:
+                  _buildQuestionsCompletedWidget(), //display questions completed
             ),
             Center(
-              child: _buildQuestionsCorrectWidget(),
+              child:
+                  _buildQuestionsCorrectWidget(), //display # of correct questions
             ),
             Center(
-              child: _buildQuestionsWrongWidget(),
+              child: _buildQuestionsWrongWidget(), //disply # of wrong questions
             ),
             Center(
-              child: _buildQuestionsCorrectPercentageWidget(),
+              child:
+                  _buildQuestionsCorrectPercentageWidget(), //display percentage of correct questions
             ),
             ElevatedButton(
               onPressed: () {
@@ -176,12 +169,12 @@ class ParentViewPageState extends State<ParentViewPage> {
   }
 
   Widget _buildUserNameWidget() {
-    //widget to get points
+    //widget to get user name
     return FutureBuilder<String>(
       future: fetchUserName(), //runs this program
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          //loading snapshot of dat
+          //loading snapshot of data
           return const Text('Loading...');
         } else if (snapshot.hasError) {
           //error handling
@@ -204,7 +197,7 @@ class ParentViewPageState extends State<ParentViewPage> {
       future: fetchUserPoints(), //runs this program
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          //loading snapshot of dat
+          //loading snapshot of data
           return const Text('Loading...');
         } else if (snapshot.hasError) {
           //error handling
@@ -226,7 +219,7 @@ class ParentViewPageState extends State<ParentViewPage> {
       future: fetchQuestionsCompleted(), //runs this program
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          //loading snapshot of dat
+          //loading snapshot of data
           return const Text('Loading...');
         } else if (snapshot.hasError) {
           //error handling
@@ -249,7 +242,7 @@ class ParentViewPageState extends State<ParentViewPage> {
       future: fectchCorrectQuestions(), //runs this program
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          //loading snapshot of dat
+          //loading snapshot of data
           return const Text('Loading...');
         } else if (snapshot.hasError) {
           //error handling
@@ -268,7 +261,7 @@ class ParentViewPageState extends State<ParentViewPage> {
   }
 
   Widget _buildQuestionsWrongWidget() {
-    //widget to get total # of questions correct
+    //widget to get total # of questions wrong
     return FutureBuilder<int>(
       future: fetchQuestionsWrong(), //runs this program
       builder: (context, snapshot) {
@@ -292,7 +285,7 @@ class ParentViewPageState extends State<ParentViewPage> {
   }
 
   Widget _buildQuestionsCorrectPercentageWidget() {
-    //widget to get total # of questions correct
+    //widget to get percentage of questions correct
     return FutureBuilder<List<int>>(
       future: Future.wait([
         fetchQuestionsWrong(),
@@ -310,14 +303,43 @@ class ParentViewPageState extends State<ParentViewPage> {
           final int correctCount = data[1];
           final int wrongCount = data[0];
           final int totalQuestions = correctCount + wrongCount;
-          final double correctPercentage = (correctCount / totalQuestions) *100;
-          return Text(
-            "Questions Correct Percentage: " +
-                correctPercentage.toStringAsFixed(2) +
-                "%",
-            style: const TextStyle(
-                fontSize: 20, color: Colors.green), //displaying it
-          );
+          final double correctPercentage =
+              (correctCount / totalQuestions) * 100;
+          if (correctPercentage > 65.0) {
+            return Column(
+              //return congradulation if correct % > 65
+              children: [
+                Text(
+                  "You answered " +
+                      correctPercentage.toStringAsFixed(2) +
+                      "% of questions correctly!",
+                  style: const TextStyle(
+                      fontSize: 20, color: Colors.green), //displaying it
+                ),
+                Text(
+                  "Great Job! Keep up the good work!",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            );
+          } else {
+            return Column(
+              //return lower level suggestion if correct % < 65
+              children: [
+                Text(
+                  "You answered " +
+                      correctPercentage.toStringAsFixed(2) +
+                      "% of questions correctly.",
+                  style: const TextStyle(
+                      fontSize: 20, color: Colors.red), //displaying it
+                ),
+                Text(
+                  "Consider trying a lower difficulty level!",
+                  style: TextStyle(fontSize: 16),
+                )
+              ],
+            );
+          }
         }
       },
     );
