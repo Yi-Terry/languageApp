@@ -307,11 +307,10 @@ class ParentViewPageState extends State<ParentViewPage> {
           return Text('Error: ${snapshot.error}');
         } else {
           final List<int> data = snapshot.data ?? [0, 0];
-          final int correctCount = data[0];
-          final int wrongCount = data[1];
+          final int correctCount = data[1];
+          final int wrongCount = data[0];
           final int totalQuestions = correctCount + wrongCount;
-          final double correctPercentage =
-              (correctCount / totalQuestions) * 100;
+          final double correctPercentage = (correctCount / totalQuestions) *100;
           return Text(
             "Questions Correct Percentage: " +
                 correctPercentage.toStringAsFixed(2) +

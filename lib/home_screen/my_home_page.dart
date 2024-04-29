@@ -313,7 +313,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.black, width: 5)),
                       child: ColoredButton(
-                          color: const Color.fromARGB(255, 255, 215, 0),
+                          color: Colors.blue,
                           text: "Premium",
                           onTap: () {
                             if (hasPremiumAccess) {

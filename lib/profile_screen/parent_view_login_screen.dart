@@ -118,6 +118,7 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                             }
                           },
                           child: const Text("Login")),
+                          
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

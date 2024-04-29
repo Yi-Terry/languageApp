@@ -125,10 +125,15 @@ class ChangePasswordState extends State<ChangePassword> {
                     hashConfirmPassword(confirmPassword);
 
                 //handle incorrect input conditions
-                if (hashedPassword.isEmpty || hashedConfirmPassword.isEmpty) {
+                if (password.isEmpty|| hashedPassword.isEmpty || hashedConfirmPassword.isEmpty|| confirmPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
-                } else if (hashedPassword.length < 6) {
+                } else if(password.isEmpty && confirmPassword.isEmpty){
+                    Fluttertoast.showToast(msg: 'Please fill all fields');
+                    return;
+                }
+                
+                else if (hashedPassword.length < 6) {
                   Fluttertoast.showToast(
                       msg: 'Weak Password, at least 6 characters are required');
                   return;
