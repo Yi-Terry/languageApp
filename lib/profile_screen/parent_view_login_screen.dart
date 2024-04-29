@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:language_app/profile_screen/change_parent_view_password.dart';
 import 'package:language_app/profile_screen/parent_view.dart';
-import 'package:ndialog/ndialog.dart';
 import 'package:language_app/profile_screen/profile_screen.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
@@ -19,6 +18,7 @@ class ParentViewLogin extends StatefulWidget {
 }
 
 class ParentViewLoginState extends State<ParentViewLogin> {
+  //controller for user input
   var parentPasswordController = TextEditingController();
 
   //Firebase connection
@@ -28,11 +28,6 @@ class ParentViewLoginState extends State<ParentViewLogin> {
     //getting the current user
     return _auth.currentUser;
   }
-
-  //retrieve parentPassword from db (done)
-  //compare with userinput
-  // if empty, prompt user to create pswd
-  //if same route to parent view page
 
   //retrieve current user's parent password
   Future<String> fetchUserParentPassword() async {
@@ -60,7 +55,9 @@ class ParentViewLoginState extends State<ParentViewLogin> {
         title: const Text("Parent View Login"),
       ),
       body: FutureBuilder(
-          future: Future.wait([fetchUserParentPassword()]),
+          future: Future.wait([
+            fetchUserParentPassword()
+          ]), //async fetch parent pswd from database
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               //loading snapshot
@@ -77,7 +74,6 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                   child: Column(
                     children: [
                       TextField(
-                        //ADD POPUP FOR INCORRECT INPUT
                         obscureText: true,
                         controller: parentPasswordController,
                         decoration: const InputDecoration(hintText: "Password"),
@@ -88,7 +84,7 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                             var parentPasswordInput =
                                 parentPasswordController.text.trim();
 
-                                 //used to hash password
+                            //used to hash password
                             String hashPassword(String parentPasswordInput) {
                               final bytes = utf8.encode(
                                   parentPasswordInput); //converts inputed password to bytes
@@ -98,19 +94,20 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                                   .toString(); //returns the hashed password as a string
                             }
 
-                            final hashedPassword = hashPassword(parentPasswordInput); //saving the hashed password into this variable
+                            final hashedPassword = hashPassword(
+                                parentPasswordInput); //saving the hashed password into this variable
 
+                            //handle incorrect input
                             if (parentPasswordInput.isEmpty) {
-                              //error for empty field
                               Fluttertoast.showToast(
                                   msg: "Please enter a password");
                               return;
-                            } else if (hashedPassword !=
-                                userParentPassword) {
+                            } else if (hashedPassword != userParentPassword) {
                               Fluttertoast.showToast(
                                   msg: "Incorrect Password. Please try again.");
                             }
                             if (hashedPassword == userParentPassword) {
+                              //if input correct, route to parent view
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
                                 return const ParentViewPage();
@@ -118,13 +115,13 @@ class ParentViewLoginState extends State<ParentViewLogin> {
                             }
                           },
                           child: const Text("Login")),
-                          
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('Forgot password?'),
                           TextButton(
                               onPressed: () {
+                                //route to change parent password page
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(builder: (context) {
                                   return const ChangeParentPassword(); //sends the user to the change password page

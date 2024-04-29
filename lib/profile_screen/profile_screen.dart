@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:language_app/home_screen/my_home_page.dart';
 import 'package:language_app/login_screen.dart';
 import 'package:language_app/profile_screen/info_box.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:language_app/profile_screen/parent_view_login_screen.dart';
 
@@ -17,21 +16,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  Widget? activeScreen;
-
-  void switchScreen() {
-    setState(() {
-      activeScreen = const ProfilePage();
-    });
-  }
-
-  void goToHome() {
-    setState(() {
-      //goes to profile page
-      activeScreen = const MyHomePage();
-    });
-  }
-
   //Firebase connection
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -91,17 +75,6 @@ class ProfilePageState extends State<ProfilePage> {
     return "Could not fetch value: password"; //otherwise return error
   }
 
-  String? userPassword;
-
-  @override
-  void initState() {
-    super.initState();
-    // Fetch password on initial build
-    fetchUserPassword().then((value) => setState(() {
-          userPassword = value;
-        }));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,12 +94,11 @@ class ProfilePageState extends State<ProfilePage> {
             'Error: ${snapshot.error}',
           );
         } else {
-          //return value for respective function call
+          //save value for respective function call
           final List<String> data = snapshot.data ?? ['', '', ''];
           final String userEmail = data[0];
           final String userName = data[1];
           final String userPassword = data[2];
-          // String password = await fetchUserPassword();
           return ListView(
             children: [
               const SizedBox(height: 40),
@@ -135,6 +107,7 @@ class ProfilePageState extends State<ProfilePage> {
                 size: 60,
               ),
               Text(
+                //display user email
                 userEmail,
                 textAlign: TextAlign.center,
               ),
@@ -146,13 +119,13 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               InfoBox(
-                //change because user should be able to change name
+                //display user name
                 content: userName,
                 sectionTitle: "Name: ",
                 isPswd: false,
               ),
               InfoBox(
-                  //add update password screen and logic
+                  //display obscured user password
                   content: userPassword,
                   sectionTitle: "Password: ",
                   isPswd: true),
@@ -178,6 +151,7 @@ class ProfilePageState extends State<ProfilePage> {
                   },
                   child: const Text('Return to home')),
               ElevatedButton(
+                //sign out button
                 onPressed: () {
                   showDialog(
                       context: context,

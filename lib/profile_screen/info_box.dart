@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/widgets.dart';
 import 'package:language_app/profile_screen/change_password.dart';
 
 class InfoBox extends StatelessWidget {
@@ -8,14 +6,12 @@ class InfoBox extends StatelessWidget {
   final String sectionTitle;
   final bool isPswd;
 
+  //set required input for InfoBox widget
   const InfoBox(
       {super.key,
       required this.content,
       required this.sectionTitle,
       required this.isPswd});
-
-//if content is password, hide text
-//if edit button pressed on pswd, pop up field with new/confirm pswd
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +30,22 @@ class InfoBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
+                //take input for title
                 sectionTitle,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
-              Text(isPswd ? '******' : content),
+              Text(isPswd
+                  ? '******'
+                  : content), //take content input, obscure if content is a password
             ],
           ),
           Visibility(
+            //only display edit password button if content is a password
             visible: isPswd,
             child: IconButton(
               onPressed: () {
+                //button to route to change password page
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
                   return const ChangePassword();

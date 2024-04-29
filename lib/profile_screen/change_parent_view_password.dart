@@ -14,6 +14,7 @@ class ChangeParentPassword extends StatefulWidget {
 }
 
 class ChangeParentPasswordState extends State<ChangeParentPassword> {
+  //variables for user input
   var parentPasswordController = TextEditingController();
   var parentConfirmController = TextEditingController();
 
@@ -56,7 +57,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
         return snapshot.value as String; //return value as string
       }
     }
-    return "Could not fetch value: password"; //otherwise return error
+    return "Could not fetch value: parent password"; //otherwise return error
   }
 
   @override
@@ -66,14 +67,14 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-            "Create Or Change Parent Password",
+            "Create Or Change Parent Password", //title of page
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         body: ListView(padding: EdgeInsets.all(8), children: [
           TextField(
             controller:
-                parentPasswordController, //creates text field controller that will take in the info from user for password
+                parentPasswordController, //creates text field controller that will take in the info from user for parent password
             obscureText: true,
             decoration: const InputDecoration(
               hintText: 'Parent Password',
@@ -81,7 +82,7 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
           ),
           TextField(
             controller:
-                parentConfirmController, //creates text field controller that will take in the info from user for confirming password
+                parentConfirmController, //creates text field controller that will take in the info from user for confirming parent password
             obscureText: true,
             decoration: const InputDecoration(
               hintText: 'Confirm Parent Password',
@@ -92,10 +93,12 @@ class ChangeParentPasswordState extends State<ChangeParentPassword> {
           ),
           ElevatedButton(
               onPressed: () async {
+                //format user input
                 var parentPassword = parentPasswordController.text.trim();
                 var confirmParentPassword = parentConfirmController.text.trim();
                 String curentParentPassword = await fetchUserParentPassword();
 
+                //check input for invalid conditions
                 if (parentPassword.isEmpty || confirmParentPassword.isEmpty) {
                   Fluttertoast.showToast(msg: 'Please fill all fields');
                   return;
