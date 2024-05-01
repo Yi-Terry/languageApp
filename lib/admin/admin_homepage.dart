@@ -140,7 +140,9 @@ class AdminHomePage extends StatelessWidget {
                             ),
                             Text(premium == "true" ? "Allowed" : "Not Allowed", 
                               style: TextStyle(
-                              color: (premium == "true") ? Color.fromARGB(255, 0, 187, 234) : const Color.fromARGB(255, 192, 13, 0), 
+                              color: (premium == "true") 
+                                ? Color.fromARGB(255, 0, 187, 234) 
+                                : const Color.fromARGB(255, 192, 13, 0), 
                               fontSize: 18.0, 
                               fontWeight: FontWeight.bold), 
                             ),
@@ -190,7 +192,10 @@ class AdminHomePage extends StatelessWidget {
                                         Navigator.of(ctx).pop();
                                         Navigator.pop(context);
                                       },
-                                      child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                                      child: Text('Cancel', 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold, 
+                                          fontSize: 20)),
                                     ),
                                     // 'Delete' option
                                     TextButton(
@@ -199,7 +204,11 @@ class AdminHomePage extends StatelessWidget {
                                         deleteUser(context, id);
                                         Navigator.pop(context);
                                       },
-                                      child: Text('Delete', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red)),
+                                      child: Text('Delete', 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold, 
+                                          fontSize: 20, 
+                                          color: Colors.red)),
                                     ),
                                   ],
                                 );
