@@ -19,18 +19,18 @@ Inspiried by mobile apps like Duolingo, the Language App is a mobile app that ca
 
 1. **Landing Page**
    <br/>
-   <img width="600" alt="Landing Page" src="https://github.com/Yi-Terry/languageApp/assets/images/beyondlanguage3.png">
+   <img width="600" alt="Landing Page" src="https://github.com/Yi-Terry/languageApp/blob/main/assets/images/beyondlanguage3.png">
    <br/>
   
 2. **Levels Page**
    <br/>
-   <img width="600" alt="Dashboard" src="https://github.com/Yi-Terry/languageApp/assets/images/beyondlanguage1.png">
+   <img width="600" alt="Dashboard" src="https://github.com/Yi-Terry/languageApp/blob/main/assets/images/beyondlanguage1.png">
    <br/>
    User can choose between 4 different levels
    
 3. **Admin Page**
    <br/>
-   <img width="600" alt="Dashboard" src="https://github.com/Yi-Terry/languageApp/assets/images/beyondlanguage2.png">
+   <img width="600" alt="Dashboard" src="https://github.com/Yi-Terry/languageApp/blob/main/assets/images/beyondlanguage2.png">
    <br/>
    Admin can create, edit, and delete users 
 
