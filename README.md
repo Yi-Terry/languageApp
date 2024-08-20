@@ -1,6 +1,6 @@
 # BeyondLanguage
 
-Inspiried by mobile apps like Duolingo, the Language App is a mobile app that can help users learn a new language with a gamified design!
+Inspired by mobile apps like Duolingo, the Language App is a mobile app that can help users learn a new language with a gamified design!
 
 
 **Features**
